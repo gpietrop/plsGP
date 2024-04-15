@@ -24,6 +24,9 @@ OrgIden ~ OrgPres
 AffLove ~ OrgPres+OrgIden+Gender
 AffJoy  ~ OrgPres+OrgIden+Gender"
 
+
+cat(model_Bergami)
+
 outBergamiboot <- csem(.data = BergamiBagozzi2000,.model = model_Bergami,
                        .disattenuate = T,
                        .PLS_weight_scheme_inner = 'factorial',

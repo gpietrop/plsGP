@@ -1,15 +1,18 @@
-create_model_string_from_matrix <- function(adj_matrix) {
-  # Define the variable names corresponding to the rows and columns of the matrix
-  variables <- c("OrgPres", "OrgIden", "AffJoy", "AffLove")
+create_sem_model_string_from_matrix <- function(adj_matrix) {
+  # Define variable names corresponding to the rows and columns of the matrix
+  variables <- c("IMAG", "EXPE", "QUAL", "VAL", "SAT", "LOY")
   
-  # Start with the measurement models (fixed in this example)
+  # Start with the composite and measurement models (static part)
   model_string <- "
-  # Measurement models
-  OrgPres <~ cei1 + cei2 + cei3 + cei4 + cei5 + cei6 + cei7 + cei8 
-  OrgIden =~ ma1 + ma2 + ma3 + ma4 + ma5 + ma6
-  AffJoy =~ orgcmt1 + orgcmt2 + orgcmt3 + orgcmt7
-  AffLove  =~ orgcmt5 + orgcmt5 + orgcmt8  # Note: orgcmt5 is repeated, check if correct
-  Gender <~ gender
+  # Composite model
+  IMAG <~ imag1 + imag2 + imag3
+  EXPE <~ expe1 + expe2 + expe3
+  QUAL <~ qual1 + qual2 + qual3 + qual4 + qual5
+  VAL  <~ val1  + val2  + val3
+  
+  # Reflective measurement model
+  SAT  =~ sat1  + sat2  + sat3  + sat4
+  LOY  =~ loy1  + loy2  + loy3  + loy4
   
   # Structural model
   "
@@ -24,21 +27,24 @@ create_model_string_from_matrix <- function(adj_matrix) {
     }
   }
   
-  # Finalize the model string
-  model_string <- sub("\n  $", "", model_string)  # Remove trailing new line and spaces
-  model_string <- paste0(model_string, "\"")
+  # Ensure there are no leading '+' in the structural model lines and trim trailing spaces/new lines
+  model_string <- gsub("\\n  $", "", model_string)  # Remove trailing new line and spaces
+  model_string <- trimws(model_string)  # Remove any leading or trailing whitespace
+  # model_string <- paste0(model_string, "\"")
   
   return(model_string)
 }
 
 # Example usage:
-# Creating a 4x4 matrix where each variable can depend on each other
 adj_matrix <- matrix(c(
-  0, 1, 1, 1,  # OrgPres dependencies
-  1, 0, 1, 1,  # OrgIden dependencies
-  1, 1, 0, 1,  # AffJoy dependencies
-  1, 1, 1, 0   # AffLove dependencies
-), nrow = 4, byrow = TRUE)
+  0, 1, 0, 0, 0, 0,  # IMAG dependencies
+  0, 0, 1, 1, 1, 0,  # EXPE dependencies
+  0, 0, 0, 1, 1, 0,  # QUAL dependencies
+  0, 0, 0, 0, 1, 0,  # VAL dependencies
+  1, 1, 1, 1, 0, 1,  # SAT dependencies
+  1, 0, 0, 0, 1, 0   # LOY dependencies
+), nrow = 6, byrow = TRUE)
 
-model_Bergami <- create_model_string_from_matrix(adj_matrix)
-cat(model_Bergami)
+model_string <- create_sem_model_string_from_matrix(adj_matrix)
+cat(model_string)
+

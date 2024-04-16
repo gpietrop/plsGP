@@ -4,32 +4,31 @@ library(igraph)
 
 # import model.R expecially: create_sem_model_string_from_matrix
 source("model.R")
+source("fitness_utils.R")
 
 # Combined fitness function
 combined_fitness_fixed <- function(matrix_vector) {
   adj_matrix <- matrix(matrix_vector, nrow = 6, byrow = TRUE)
   
-  # Set the diagonal elements of the matrix to zero
-  diag(adj_matrix) <- 0
   
-  # Set all elements in the first row to zero
-  adj_matrix[1, ] <- 0
+  diag(adj_matrix) <- 0 # Set the diagonal elements of the matrix to zero
+  adj_matrix[1, ] <- 0 # Set all elements in the first row to zero
+  
+  # Check each column to ensure at least one non-zero entry
+  if (any(colSums(adj_matrix) == 0)) {
+    # cat("One or more constructs are not used in the structural model.\n")
+    # return(-10000)  # Penalize configurations where any construct is unused
+    adj_matrix <- repair_individual_unused(adj_matrix)
+  }
   
   # Convert the matrix to an igraph object
   g <- graph_from_adjacency_matrix(adj_matrix, mode = "directed", diag = FALSE)
   
   # Check for cycles using girth, which finds the shortest cycle
   has_cycle <- !is.infinite(girth(g)$girth)
-
   if (has_cycle) {
-    return(-10000)  # The matrix has cyclic dependencues, return a very low fitness score
-    } 
- 
-  # Check each column to ensure at least one non-zero entry
-  if (any(colSums(adj_matrix) == 0)) {
-    # cat("One or more constructs are not used in the structural model.\n")
-    return(-10000)  # Penalize configurations where any construct is unused
-  }
+    return(-10000)  # The matrix has cyclic dependencies
+  } 
   
   # Check if the solution is admissible 
   model_string <- create_sem_model_string_from_matrix(adj_matrix)

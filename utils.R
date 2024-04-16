@@ -60,3 +60,25 @@ fitness_function <- function(matrix_vector) {
   # Replace this with your actual fitness evaluation logic
   sum(adj_matrix)
 }
+
+
+# Custom mutation function with specified mutation probability
+custom_mutation <- function(object) {
+  # Retrieve the population matrix
+  genes <- object@population
+  # Mutation probability
+  pm = 0.2  # Set mutation probability to 20%
+  
+  # Iterate over each gene to apply mutation based on pm
+  for (i in 1:nrow(genes)) {
+    for (j in 1:ncol(genes)) {
+      if (runif(1) < pm) {  # Mutation condition
+        genes[i, j] <- ifelse(genes[i, j] == 1, 0, 1)  # Flip bit
+      }
+    }
+  }
+  
+  # Update the population in the object
+  object@population <- genes
+  return(object)
+}

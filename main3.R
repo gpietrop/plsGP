@@ -17,15 +17,15 @@ measurement_model <- list(
 model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model)
 cat(model_string)
 
-model_string_written <- '
-  # Measurement model
-  eta1 =~ 0.7*y1 + 0.7*y2 + 0.7*y3
-  eta2 =~ 0.8*y4 + 0.8*y5 + 0.8*y6
-  
-  # Structural model
-  eta2 ~ 1*eta1
-'
-cat(model_string_written)
+# model_string_written <- '
+#   # Measurement model
+#   eta1 =~ 0.7*y1 + 0.7*y2 + 0.7*y3
+#   eta2 =~ 0.8*y4 + 0.8*y5 + 0.8*y6
+#   
+#   # Structural model
+#   eta2 ~ 1*eta1
+# '
+# cat(model_string_written)
 
 # Generate data based on the specified model
 generated_data <- generateData(

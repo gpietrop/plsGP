@@ -17,7 +17,9 @@ create_sem_model_string_from_matrix <- function(adj_matrix, variables, measureme
     predictors <- variables[adj_matrix[i, ] == 1]
     
     if (length(predictors) > 0) {
-      model_string <- paste(model_string, sprintf("  %s ~ 1*%s\n  ", dependent, paste(predictors, collapse = " + ")), sep = "")
+      # Include the coefficient '1*' for each predictor explicitly
+      relationship_str <- sapply(predictors, function(p) paste("1*", p, sep = ""))
+      model_string <- paste(model_string, sprintf("  %s ~ %s\n", dependent, paste(relationship_str, collapse = " + ")), sep = "")
     }
   }
   

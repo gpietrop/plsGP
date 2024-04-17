@@ -7,16 +7,17 @@ source("fitness_generated.R")
 # Define fitness input 
 variables <- c("eta1", "eta2")
 measurement_model <- list(
-  eta1 = c("0.7*y1", "0.7*y2", "0.7*y3"),
-  eta2 = c("0.8*y4", "0.8*y5", "0.8*y6")
+  eta1 = c("1*y1", "1*y2", "1*y3"),
+  eta2 = c("1*y4", "1*y5", "1*y6")
 )
+
 model_string_true <- '
   # Measurement model
   eta1 =~ 0.7*y1 + 0.7*y2 + 0.7*y3
   eta2 =~ 0.8*y4 + 0.8*y5 + 0.8*y6
   
   # Structural model
-  eta2 ~ 1*eta1
+  eta2 ~ 0.7*eta1
 '
 # Generate data based on the specified model
 dataset_generated <- generateData(

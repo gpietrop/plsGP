@@ -15,7 +15,7 @@ ga_control <- ga(
   type = "binary",                   # Type of GA (binary for 0/1 matrix elements)
   nBits = 6 * 6,                     # Total number of bits (elements in the matrix)
   popSize = 1000,                      # Population size
-  maxiter = 100,                     # Maximum number of iterations
+  maxiter = 50,                     # Maximum number of iterations
   pcrossover = 0.8,
   fitness = combined_fitness_fixed,  # Fitness function
   elitism = TRUE,                    # Use elitism

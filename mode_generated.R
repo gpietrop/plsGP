@@ -6,7 +6,8 @@ create_sem_model_string_from_matrix <- function(adj_matrix, variables, measureme
   # Include the measurement model specified in the input
   for (var in names(measurement_model)) {
     model_string <- paste(model_string, sprintf("  %s =~ %s\n", var, paste(measurement_model[[var]], collapse = " + ")), sep = "")
-  }
+    print(model_string)  
+    }
   
   # Structural model section
   model_string <- paste(model_string, "\n# Structural model\n")

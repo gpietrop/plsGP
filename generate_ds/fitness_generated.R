@@ -36,7 +36,6 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   out <- csem(.data = dataset_generated,.model = model_string)
   ver = verify(out)
   if (!sum(ver) == 0) {
-    # cat("Non admissible solution.\n")
     return(-10000)  # Penalize configurations where any construct is unused
   }
   

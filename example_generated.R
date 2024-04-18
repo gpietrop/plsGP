@@ -3,7 +3,7 @@ library(cSEM)
 library(cSEM.DGP)
 
 # Assume 'create_sem_model_string_from_matrix' is defined in this script
-source("mode_generated.R")
+source("model_generated.R")
 
 # Adjacency matrix where rows and columns correspond to variables
 # '1' indicates a direct influence from column variable to row variable

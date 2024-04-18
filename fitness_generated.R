@@ -3,7 +3,7 @@ library(cSEM)
 library(igraph)
 
 # import model.R expecially: create_sem_model_string_from_matrix
-source("mode_generated.R")
+source("model_generated.R")
 source("fitness_utils.R")
 
 # Combined fitness function

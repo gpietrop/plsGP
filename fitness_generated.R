@@ -7,8 +7,8 @@ source("mode_generated.R")
 source("fitness_utils.R")
 
 # Combined fitness function
-combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, dataset_generated) {
-  adj_matrix <- matrix(matrix_vector, nrow = 2, byrow = TRUE)
+combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated) {
+  adj_matrix <- matrix(matrix_vector, nrow = 5, byrow = TRUE)
   
   diag(adj_matrix) <- 0 # Set the diagonal elements of the matrix to zero
   adj_matrix[1, ] <- 0 # Set all elements in the first row to zero
@@ -30,7 +30,7 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   } 
   
   # Check if the solution is admissible 
-  model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model, dataset_generated)
+  model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable)
   # print(adj_matrix)
   # print(model_string)
   out <- csem(.data = dataset_generated,.model = model_string)
@@ -40,7 +40,7 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   }
   
   # SEM fitness calculation (using the negative of AIC to make higher values more fit)
-  sem_fitness <- -fitness(adj_matrix, variables, measurement_model, dataset_generated)
+  sem_fitness <- -fitness(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated)
   
   # Calculate combined fitness with the sparsity component weighted
   combined_score <- sem_fitness # + (0.5 * sparsity_fitness_value)
@@ -50,9 +50,9 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
 
 
 # Define the fitness function
-fitness <- function(adj_matrix, variables, measurement_model, dataset_generated) {
+fitness <- function(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated) {
   # Create the model string from the adjacency matrix
-  model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model)
+  model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable)
   # Load data and perform SEM analysis
   out <- csem(.data = dataset_generated, .model = model_string)
   # Calculate model selection criteria

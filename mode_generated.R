@@ -1,13 +1,23 @@
-create_sem_model_string_from_matrix <- function(adj_matrix, variables, measurement_model, structural_coefficients) {
-  # Measurement model section
-  model_string <- "
-  # Measurement model\n"
+create_sem_model_string_from_matrix <- function(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable) {
+  # Initialize the model string
+  model_string <- "# Composite model\n"
   
-  # Include the measurement model specified in the input
+  # Include the measurement model specified in the input for composite types
   for (var in names(measurement_model)) {
-    model_string <- paste(model_string, sprintf("  %s =~ %s\n", var, paste(measurement_model[[var]], collapse = " + ")), sep = "")
-    print(model_string)  
+    if (type_of_variable[var] == "composite") {
+      items <- paste(measurement_model[[var]], collapse = " + ")
+      model_string <- paste(model_string, sprintf("  %s <~ %s\n", var, items), sep = "")
     }
+  }
+  
+  # Adding reflective measurement models
+  model_string <- paste(model_string, "\n# Reflective measurement model\n")
+  for (var in names(measurement_model)) {
+    if (type_of_variable[var] == "reflective") {
+      items <- paste(measurement_model[[var]], collapse = " + ")
+      model_string <- paste(model_string, sprintf("  %s =~ %s\n", var, items), sep = "")
+    }
+  }
   
   # Structural model section
   model_string <- paste(model_string, "\n# Structural model\n")
@@ -18,31 +28,44 @@ create_sem_model_string_from_matrix <- function(adj_matrix, variables, measureme
     predictors <- variables[adj_matrix[i, ] == 1]
     
     if (length(predictors) > 0) {
-      # Include the coefficient '1*' for each predictor explicitly
-      relationship_str <- sapply(predictors, function(p) paste("1*", p, sep = ""))
-      model_string <- paste(model_string, sprintf("  %s ~ %s\n", dependent, paste(relationship_str, collapse = " + ")), sep = "")
+      relationship_str <- paste(predictors, collapse = " + ")
+      model_string <- paste(model_string, sprintf("  %s ~ %s\n", dependent, relationship_str), sep = "")
     }
   }
   
-  # Ensure there are no leading '+' in the structural model lines and trim trailing spaces/new lines
-  model_string <- gsub("\\n  $", "", model_string)  # Remove trailing new line and spaces
+  # Cleanup the string: remove any unnecessary characters and trim trailing spaces/new lines
+  model_string <- gsub("\\n\\s+$", "", model_string)  # Remove trailing new line and spaces
   model_string <- trimws(model_string)  # Remove any leading or trailing whitespace
-  # model_string <- paste0(model_string, "\"")
   
   # Return the complete model string
   return(model_string)
 }
 
-# Example input definitions
-variables <- c("eta1", "eta2")
-adj_matrix <- matrix(c(0, 1, 0, 0), nrow=2, byrow=TRUE) # eta1 influences eta2
+# Adjacency matrix where rows and columns correspond to variables
+# '1' indicates a direct influence from column variable to row variable
+adj_matrix <- matrix(c(0, 1, 0,
+                       1, 0, 1,
+                       0, 1, 0),
+                     byrow = TRUE, nrow = 3)
+
+# List of variable names
+variables <- c("eta1", "eta2", "eta3")
+
+# Measurement model (specify which manifest variables are associated with which latent variables)
 measurement_model <- list(
-  eta1 = c("0.7*y1", "0.7*y2", "0.7*y3"),
-  eta2 = c("0.8*y4", "0.8*y5", "0.8*y6")
+  eta1 = c("y1", "y2", "y3"),
+  eta2 = c("y4", "y5", "y6"),
+  eta3 = c("y7", "y8")
 )
 
-# Generate the model string using the function
-model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model)
+# Types of variables (composite or reflective)
+type_of_variable <- c(eta1 = "composite", eta2 = "composite", eta3 = "reflective")
 
-# Print the model string
+# Structural coefficients (optional and unused in the provided function)
+structural_coefficients <- list()
+
+# Call the modified function
+model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable)
+
+# Print the resulting SEM model string
 cat(model_string)

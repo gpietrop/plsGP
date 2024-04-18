@@ -56,6 +56,7 @@ combined_fitness_fixed <- function(matrix_vector) {
 fitness <- function(adj_matrix) {
   # Create the model string from the adjacency matrix
   model_string <- create_sem_model_string_from_matrix(adj_matrix)
+  print(model_string)
   # Load data and perform SEM analysis
   out <- csem(.data = satisfaction, .model = model_string)
   # Calculate model selection criteria

@@ -48,6 +48,7 @@ ga_control <- ga(
   popSize = 10,                     
   maxiter = 10,                     
   pcrossover = 0.8,
+  pmutation = 0.5, 
   fitness = function(x) combined_fitness_fixed(x, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated),
   elitism = TRUE,                    
   parallel = FALSE,                  

@@ -6,6 +6,12 @@ library(igraph)
 source("model.R")
 source("fitness_utils.R")
 
+
+admiss_individuals_all <- list()
+best_individual <<- NULL
+best_fitness <<- -Inf
+
+
 # Combined fitness function
 combined_fitness_fixed <- function(matrix_vector) {
   adj_matrix <- matrix(matrix_vector, nrow = 6, byrow = TRUE)
@@ -42,13 +48,18 @@ combined_fitness_fixed <- function(matrix_vector) {
   # SEM fitness calculation (using the negative of AIC to make higher values more fit)
   sem_fitness <- -fitness(adj_matrix)
   
-  # Sparsity fitness calculation
-  sparsity_fitness_value <- sparsity_fitness(adj_matrix)
+  if (is.na(sem_fitness)) {
+    return(-10000)
+  }
   
-  # Calculate combined fitness with the sparsity component weighted
-  combined_score <- sem_fitness # + (0.5 * sparsity_fitness_value)
+  # Store the modified individual
+  admiss_individuals_all <<- append(admiss_individuals_all, list(adj_matrix))
+  if (sem_fitness > best_fitness) {
+    best_individual <<- adj_matrix
+    best_fitness <<- sem_fitness
+  }
   
-  return(combined_score)
+  return(sem_fitness)
 }
 
 
@@ -70,33 +81,17 @@ fitness <- function(adj_matrix) {
 }
 
 
-# Define the fitness function for matrix sparsity
-sparsity_fitness <- function(matrix) {
-  # Calculate the total number of elements in the matrix
-  total_elements <- length(matrix)
-  # Count the number of ones in the matrix
-  number_of_ones <- sum(matrix)  # Since it's a binary matrix, just summing up will give us the number of ones
-  # Calculate the proportion of ones (density) in the matrix
-  density <- number_of_ones / total_elements
-  # You could also consider using the count of ones directly as a measure of non-sparsity
-  # or you could invert the density to reflect sparsity (1 - density)
-  sparsity_score <- 1 - density  # This score is higher when the matrix is more sparse
-  return(sparsity_score)
-}
-
-# # Example usage:
-# adj_matrix <- matrix(c(
-#    0, 0, 0, 0, 0, 0,  # IMAG dependencies
-#    1, 0, 0, 0, 0, 0,  # EXPE dependencies
-#    0, 1, 0, 0, 0, 0,  # QUAL dependencies
-#    0, 1, 1, 0, 0, 0,  # VAL dependencies
-#    1, 1, 1, 1, 0, 1,  # SAT dependencies
-#    1, 0, 0, 0, 1, 0   # LOY dependencies
-# ), nrow = 6, byrow = TRUE)
-#   
-# aic_vector <- fitness(adj_matrix)
-# # # sparsity <- sparsity_fitness(adj_matrix)
+#Example usage:
+adj_matrix <- matrix(c(
+   0, 0, 0, 0, 0, 0,  # IMAG dependencies
+   1, 0, 0, 0, 0, 0,  # EXPE dependencies
+   0, 1, 0, 0, 0, 0,  # QUAL dependencies
+   0, 1, 1, 0, 0, 0,  # VAL dependencies
+   1, 1, 1, 1, 0, 0,  # SAT dependencies
+   1, 0, 0, 0, 1, 0   # LOY dependencies
+), nrow = 6, byrow = TRUE)
+  
 # #  
-# # # res <- fitness_function(adj_matrix)
+res <- fitness(adj_matrix)
 # # 
-# print(aic_vector)
+print(res)

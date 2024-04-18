@@ -4,11 +4,6 @@ library(doParallel)
 
 source("fitness.R")
 
-# Setup parallel environment
-numCores <- detectCores()  # Detect the number of cores
-cl <- makeCluster(numCores)  # Create a cluster
-registerDoParallel(cl)  # Register the parallel backend
-
 # Set GA parameters
 
 ga_control <- ga(
@@ -16,12 +11,15 @@ ga_control <- ga(
   nBits = 6 * 6,                     # Total number of bits (elements in the matrix)
   popSize = 1000,                      # Population size
   maxiter = 50,                     # Maximum number of iterations
+  pmutation = 0.4,
   pcrossover = 0.8,
   fitness = combined_fitness_fixed,  # Fitness function
   elitism = TRUE,                    # Use elitism
   parallel = FALSE,                  # Enable parallel processing
   seed = 123                         # Set a seed for reproducibility
 )
+
+print(best_individual)
 
 # Run the genetic algorithm
 ga_result <- ga_control

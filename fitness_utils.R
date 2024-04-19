@@ -6,11 +6,11 @@ repair_individual_unused <- function(adj_matrix) {
   col_sums <- colSums(adj_matrix)
   empty_columns <- which(col_sums == 0)
   
-  # Randomly add a '1' to each empty column avoiding the diagonal
+  # Randomly add a '1' to each empty column avoiding the diagonal and the first row
   if (length(empty_columns) > 0) {
     for (col in empty_columns) {
-      # Sample from rows excluding the diagonal element for the current column
-      valid_rows <- setdiff(1:n, col)  # Remove the diagonal element from possible choices
+      # Sample from rows excluding the diagonal element and the first row for the current column
+      valid_rows <- setdiff(1:n, c(col, 1))  # Remove the diagonal and first row from possible choices
       if (length(valid_rows) > 0) {
         row_to_mutate <- sample(valid_rows, 1)  # Select one valid row at random
         adj_matrix[row_to_mutate, col] <- 1  # Set the selected position to 1
@@ -19,3 +19,4 @@ repair_individual_unused <- function(adj_matrix) {
   }
   return(adj_matrix)
 }
+

@@ -6,17 +6,20 @@ library(igraph)
 source("model_generated.R")
 source("fitness_utils.R")
 
+admiss_individuals_all <- list()
+best_individual <<- NULL
+best_fitness <<- -Inf
+
 # Combined fitness function
 combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated) {
   adj_matrix <- matrix(matrix_vector, nrow = 3, byrow = TRUE)
   
   diag(adj_matrix) <- 0 # Set the diagonal elements of the matrix to zero
   adj_matrix[1, ] <- 0 # Set all elements in the first row to zero
-  
   # Check each column to ensure at least one non-zero entry
   if (any(colSums(adj_matrix) == 0)) {
     # cat("One or more constructs are not used in the structural model.\n")
-    # return(-10000)  # Penalize configurations where any construct is unused
+    # return(-10000)
     adj_matrix <- repair_individual_unused(adj_matrix)
   }
   
@@ -42,10 +45,19 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   # SEM fitness calculation (using the negative of AIC to make higher values more fit)
   sem_fitness <- -fitness(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated)
   
-  # Calculate combined fitness with the sparsity component weighted
-  combined_score <- sem_fitness # + (0.5 * sparsity_fitness_value)
+  if (is.na(sem_fitness)) {
+    return(-10000)
+  }
   
-  return(combined_score)
+  # Store the modified individual
+  admiss_individuals_all <<- append(admiss_individuals_all, list(adj_matrix))
+  if (sem_fitness > best_fitness) {
+    best_individual <<- adj_matrix
+    best_fitness <<- sem_fitness
+  }
+  
+  
+  return(sem_fitness)
 }
 
 

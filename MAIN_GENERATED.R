@@ -45,14 +45,14 @@ dataset_generated <- generateData(
 ga_control <- ga(
   type = "binary",                   
   nBits = 3 * 3,                     
-  popSize = 10,                     
-  maxiter = 10,                     
+  popSize = 1000,                     
+  maxiter = 100,                     
   pcrossover = 0.8,
   pmutation = 0.5, 
   fitness = function(x) combined_fitness_fixed(x, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated),
   elitism = TRUE,                    
   parallel = FALSE,                  
-  seed = 123                        
+  seed = 124                        
 )
 
 # Run the genetic algorithm
@@ -61,7 +61,6 @@ plot(ga_result)
 
 # Print results
 cat("Best solution found:\n")
-best_individual = matrix(ga_result@solution, nrow = 3, byrow = TRUE)
 print(best_individual)
 
 

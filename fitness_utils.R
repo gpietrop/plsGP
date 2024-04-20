@@ -1,22 +1,47 @@
 repair_individual_unused <- function(adj_matrix) {
-  # Get the number of rows (or columns, since it's square)
   n <- nrow(adj_matrix)
   
-  # Check for columns with all zeros
+  # Check for rows and columns with all zeros
+  row_sums <- rowSums(adj_matrix)
   col_sums <- colSums(adj_matrix)
-  empty_columns <- which(col_sums == 0)
   
-  # Randomly add a '1' to each empty column avoiding the diagonal and the first row
-  if (length(empty_columns) > 0) {
-    for (col in empty_columns) {
-      # Sample from rows excluding the diagonal element and the first row for the current column
-      valid_rows <- setdiff(1:n, c(col, 1))  # Remove the diagonal and first row from possible choices
-      if (length(valid_rows) > 0) {
-        row_to_mutate <- sample(valid_rows, 1)  # Select one valid row at random
-        adj_matrix[row_to_mutate, col] <- 1  # Set the selected position to 1
+  empty_indices <- which(row_sums == 0 & col_sums == 0)
+
+  if (length(empty_indices) > 0) {
+    for (k in empty_indices) {
+      # Decide randomly whether to modify the row or column, only if there's a choice below the diagonal
+        if (runif(1) < 0.5) {
+          # Modify a column: choose a row index below the diagonal element
+          valid_rows <- if (k == n) 2:(n-1) else (k+1):n # start from the second row
+          if (k <= n) {
+            # Remove the diagonal element specifically
+            valid_rows <- valid_rows[valid_rows != k]
+          }
+          if (length(valid_rows) > 0) {
+            if (length(valid_rows) == 1) {
+              adj_matrix[valid_rows, k] <- 1
+            } else {
+              chosen_row <- sample(valid_rows, 1)
+              adj_matrix[chosen_row, k] <- 1
+            }
+          }
+        } else {
+          # Modify a row: choose a column index below the diagonal element
+          valid_cols <- if (k == n) 1:(n-1) else (k+1):n # start from the second row
+          if (k <= n) {
+            # Remove the diagonal element specifically
+            valid_cols <- valid_cols[valid_cols != k]
+          }
+          if (length(valid_cols) > 0) {
+            if (length(valid_cols) == 1) {
+              adj_matrix[k, valid_cols] <- 1
+            } else {
+              chosen_col <- sample(valid_cols, 1)
+              adj_matrix[k, chosen_col] <- 1
+            }
+          }
       }
     }
   }
   return(adj_matrix)
 }
-

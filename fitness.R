@@ -19,12 +19,18 @@ combined_fitness_fixed <- function(matrix_vector) {
   
   diag(adj_matrix) <- 0 # Set the diagonal elements of the matrix to zero
   adj_matrix[1, ] <- 0 # Set all elements in the first row to zero
-  
+
   # Check each column to ensure at least one non-zero entry
-  if (any(colSums(adj_matrix) == 0)) {
-    # cat("One or more constructs are not used in the structural model.\n")
-    # return(-10000)  # Penalize configurations where any construct is unused
+  row_sums <- rowSums(adj_matrix)
+  col_sums <- colSums(adj_matrix)
+  if (any(row_sums == 0 & col_sums == 0)) {
+  #   # cat("One or more constructs are not used in the structural model.\n")
+  #   # return(-10000)  # Penalize configurations where any construct is unused
+    # print("before")
+    # print(adj_matrix)
     adj_matrix <- repair_individual_unused(adj_matrix)
+    # print("after")
+    # print(adj_matrix)
   }
   
   # Convert the matrix to an igraph object
@@ -95,3 +101,10 @@ adj_matrix <- matrix(c(
 res <- fitness(adj_matrix)
 # # 
 print(res)
+
+model_string <- create_sem_model_string_from_matrix(adj_matrix)
+out <- csem(.data = satisfaction, .model = model_string)
+verify(out)
+
+cat(model_string)
+

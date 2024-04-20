@@ -87,24 +87,24 @@ fitness <- function(adj_matrix) {
 }
 
 
-#Example usage:
-adj_matrix <- matrix(c(
-   0, 0, 0, 0, 0, 0,  # IMAG dependencies
-   1, 0, 0, 0, 0, 0,  # EXPE dependencies
-   0, 1, 0, 0, 0, 0,  # QUAL dependencies
-   0, 1, 1, 0, 0, 0,  # VAL dependencies
-   1, 1, 1, 1, 0, 0,  # SAT dependencies
-   1, 0, 0, 0, 1, 0   # LOY dependencies
-), nrow = 6, byrow = TRUE)
-  
-# #  
-res <- fitness(adj_matrix)
-# # 
-print(res)
-
-model_string <- create_sem_model_string_from_matrix(adj_matrix)
-out <- csem(.data = satisfaction, .model = model_string)
-verify(out)
-
-cat(model_string)
-
+# #Example usage:
+# adj_matrix <- matrix(c(
+#    0, 0, 0, 0, 0, 0,  # IMAG dependencies
+#    1, 0, 0, 0, 0, 0,  # EXPE dependencies
+#    0, 1, 0, 0, 0, 0,  # QUAL dependencies
+#    0, 1, 1, 0, 0, 0,  # VAL dependencies
+#    1, 1, 1, 1, 0, 0,  # SAT dependencies
+#    1, 0, 0, 0, 1, 0   # LOY dependencies
+# ), nrow = 6, byrow = TRUE)
+#   
+# # #  
+# res <- fitness(adj_matrix)
+# # # 
+# print(res)
+# 
+# model_string <- create_sem_model_string_from_matrix(adj_matrix)
+# out <- csem(.data = satisfaction, .model = model_string)
+# verify(out)
+# 
+# cat(model_string)
+# 

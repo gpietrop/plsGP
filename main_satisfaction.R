@@ -3,18 +3,17 @@ library(GA)
 library(optparse)
 
 # Source the fitness function and any additional needed R scripts
-source("model.R")
-source("fitness_utils.R")
 source("fitness.R")
+source("ga_operators.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--popSize"), type="integer", default=500, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=20, help="Maximum number of iterations"),
-  make_option(c("--pmutation"), type="double", default=0.8, help="Mutation rate"),
-  make_option(c("--pcrossover"), type="double", default=0.2, help="Crossover rate"),
+  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=50, help="Maximum number of iterations"),
+  make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
+  make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=1, help="First seed for the GA"),
-  make_option(c("--seed_end"), type="integer", default=30, help="Last seed for the GA")
+  make_option(c("--seed_end"), type="integer", default=10, help="Last seed for the GA")
 )
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
@@ -60,6 +59,7 @@ run_ga <- function(seed) {
     elitism = TRUE,
     parallel = FALSE,
     seed = seed,
+    mutation = myMutation_satisfaction,  
     monitor = function(obj) obj@fitness
   )
   
@@ -84,3 +84,4 @@ run_ga <- function(seed) {
 seed_start <- opt$seed_start
 seed_end <- opt$seed_end
 all_results <- lapply(seed_start:seed_end, run_ga)
+

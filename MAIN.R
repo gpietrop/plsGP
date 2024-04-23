@@ -9,7 +9,7 @@ source("fitness.R")
 ga_control <- ga(
   type = "binary",                   # Type of GA (binary for 0/1 matrix elements)
   nBits = 6 * 6,                     # Total number of bits (elements in the matrix)
-  popSize = 1000,                      # Population size
+  popSize = 100,                      # Population size
   maxiter = 100,                     # Maximum number of iterations
   pmutation = 0.2,
   pcrossover = 0.8,

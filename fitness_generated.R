@@ -12,7 +12,8 @@ best_fitness <<- -Inf
 
 # Combined fitness function
 combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated) {
-  adj_matrix <- matrix(matrix_vector, nrow = 3, byrow = TRUE)
+  n_variables <- length(variables)
+  adj_matrix <- matrix(matrix_vector, nrow = n_variables, byrow = TRUE)
   
   diag(adj_matrix) <- 0 # Set the diagonal elements of the matrix to zero
   adj_matrix[1, ] <- 0 # Set all elements in the first row to zero

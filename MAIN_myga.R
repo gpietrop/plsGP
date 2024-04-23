@@ -5,8 +5,6 @@ library(doParallel)
 source("fitness.R")
 
 myMutation <- function(object, parent) {
-  # print("mutazione")
-  # print(as.vector(object@population[parent,]))
   mutate <- parent <- as.vector(object@population[parent,])
   mutate_matrix <- matrix(mutate, nrow = 6, byrow = TRUE)
   diag(mutate_matrix) <- 0 # Set the diagonal elements of the matrix to zero
@@ -31,7 +29,7 @@ ga_control <- ga(
   type = "binary",                   
   nBits = 6 * 6,                    
   popSize = 100,                     
-  maxiter = 100,                    
+  maxiter = 1000,                    
   pmutation = 1.0,
   pcrossover = 0.8,
   fitness = combined_fitness_fixed, 

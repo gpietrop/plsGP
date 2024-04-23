@@ -27,7 +27,7 @@ combined_fitness_fixed <- function(matrix_vector) {
   if (any(row_sums == 0 & col_sums == 0)) {
   #   # cat("One or more constructs are not used in the structural model.\n")
   #   # return(-10000)  # Penalize configurations where any construct is unused
-    print("repair")
+    # print("repair")
     # print(adj_matrix)
     adj_matrix <- repair_individual_unused(adj_matrix)
     # print("after")
@@ -40,7 +40,7 @@ combined_fitness_fixed <- function(matrix_vector) {
   # Check for cycles using girth, which finds the shortest cycle
   has_cycle <- !is.infinite(girth(g)$girth)
   if (has_cycle) {
-    cat("cicle")
+    # cat("cicle")
     return(-10000)  # The matrix has cyclic dependencies
   } 
   # print(adj_matrix)
@@ -49,7 +49,7 @@ combined_fitness_fixed <- function(matrix_vector) {
   out <- csem(.data = satisfaction,.model = model_string)
   ver = verify(out)
   if (!sum(ver) == 0) {
-    cat("Non admissible solution.\n")
+    # cat("Non admissible solution.\n")
     return(-10000)  # Penalize configurations where any construct is unused
   }
   

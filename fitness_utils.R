@@ -21,8 +21,20 @@ repair_individual_unused <- function(adj_matrix) {
             if (length(valid_rows) == 1) {
               adj_matrix[valid_rows, k] <- 1
             } else {
-              chosen_row <- sample(valid_rows, 1)
-              adj_matrix[chosen_row, k] <- 1
+              condition_met <- TRUE
+              while (length(valid_rows) > 0 && condition_met) {
+                chosen_row <- sample(valid_rows, 1)
+                # print(valid_rows)
+                adj_matrix_mod <- adj_matrix
+                adj_matrix_mod[chosen_row, k] <- 1
+                valid_rows <- valid_rows[-which(valid_rows == chosen_row)]
+                g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
+                condition_met <- !is.infinite(girth(g)$girth)
+                  if (!condition_met) {
+                    adj_matrix <- adj_matrix_mod
+                    break  # Exit the loop if the condition is met
+                }
+              }
             }
           }
         } else {
@@ -36,8 +48,20 @@ repair_individual_unused <- function(adj_matrix) {
             if (length(valid_cols) == 1) {
               adj_matrix[k, valid_cols] <- 1
             } else {
-              chosen_col <- sample(valid_cols, 1)
-              adj_matrix[k, chosen_col] <- 1
+              condition_met <- TRUE
+              while (length(valid_cols) > 0 && condition_met) {
+                chosen_col <- sample(valid_cols, 1)
+                # print(valid_cols)
+                adj_matrix_mod <- adj_matrix
+                adj_matrix_mod[chosen_col, k] <- 1
+                valid_cols <- valid_cols[-which(valid_cols == chosen_col)]
+                g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
+                condition_met <- !is.infinite(girth(g)$girth)
+                if (!condition_met) {
+                  adj_matrix <- adj_matrix_mod
+                  break  # Exit the loop if the condition is met
+                }
+              }
             }
           }
       }

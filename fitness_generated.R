@@ -77,52 +77,15 @@ fitness <- function(adj_matrix, variables, measurement_model, structural_coeffic
 }
 
 
-# # Define fitness input 
-# # List of variable names
-# variables <- c("eta1", "eta2", "eta3")
-# 
-# # Measurement model (specify which manifest variables are associated with which latent variables)
-# measurement_model <- list(
-#   eta1 = c("y1", "y2", "y3"),
-#   eta2 = c("y4", "y5", "y6"),
-#   eta3 = c("y7", "y8")
-# )
-# 
-# # Types of variables (composite or reflective)
-# type_of_variable <- c(eta1 = "composite", eta2 = "composite", eta3 = "reflective")
-# 
-# # Structural coefficients (optional and unused in the provided function)
-# structural_coefficients <- list()
-# 
-# 
-# model_string_true <- '
-#   # Measurement model
-#   eta1 =~ 0.7*y1 + 0.7*y2 + 0.7*y3
-#   eta2 =~ 0.8*y4 + 0.8*y5 + 0.8*y6
-#   eta3 =~ 0.8*y7 + 0.8*y8
-#   
-#   # Structural model
-#   eta2 ~ 1*eta1
-#   eta3 ~ 1*eta2
-# '
-# 
-# # Generate data based on the specified model
-# dataset_generated <- generateData(
-#   .model = model_string_true,    # Use the generated model string
-#   .n     = 1000,             # Number of observations
-#   .return_type = "data.frame"
-# )
-# 
+# source("hyperparameters.R")
 # adj_matrix <- matrix(c(0, 0, 0,
 #                        1, 0, 0,
-#                        1, 1, 0),
+#                        0, 1, 0),
 #                      nrow = 3, byrow = TRUE)
 # # Call the modified function
 # model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable)
 # out <- csem(.data = dataset_generated, .model = model_string)
 # verify(out)
 # 
-# aic_values <- model_criteria$AIC
 # # Print the resulting SEM model string
-# cat(model_string)
 # fitness(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated)

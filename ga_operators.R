@@ -1,7 +1,7 @@
 library(GA)
 
 source("fitness_utils.R")
-source("investigation_hyperparameters.R")
+source("hyperparameters.R")
 
 
 myMutation <- function(object, parent) {
@@ -39,7 +39,7 @@ myMutation_satisfaction <- function(object, parent) {
   mutate_vector <- as.vector(t(mutate_matrix))
   n <- length(mutate_vector)
   j <- sample(1:n, size = 1)
-  if (runif(1) <= 0.2) {  # There is a 20% chance to execute the mutation
+  if (runif(1) <= 0.4) {  # There is a 20% chance to execute the mutation
     mutate_vector[j] <- abs(mutate_vector[j] - 1)
   }
   return(mutate_vector)

@@ -6,8 +6,8 @@ source("fitness_generated.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--popSize"), type="integer", default=50, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=100, help="Maximum number of iterations"),
+  make_option(c("--popSize"), type="integer", default=10, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=10, help="Maximum number of iterations"),
   make_option(c("--pmutation"), type="double", default=0.8, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.2, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=15, help="First seed for the GA"),

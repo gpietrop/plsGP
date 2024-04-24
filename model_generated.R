@@ -43,7 +43,7 @@ create_sem_model_string_from_matrix <- function(adj_matrix, variables, measureme
 
 # Adjacency matrix where rows and columns correspond to variables
 # '1' indicates a direct influence from column variable to row variable
-adj_matrix <- matrix(c(0, 1, 0,
+adj_matrix <- matrix(c(0, 0, 0,
                        1, 0, 1,
                        0, 1, 0),
                      byrow = TRUE, nrow = 3)
@@ -69,3 +69,4 @@ model_string <- create_sem_model_string_from_matrix(adj_matrix, variables, measu
 
 # Print the resulting SEM model string
 cat(model_string)
+

@@ -45,7 +45,7 @@ dataset_generated <- generateData(
 ga_control <- ga(
   type = "binary",                   
   nBits = 3 * 3,                     
-  popSize = 10,                     
+  popSize = 100,                     
   maxiter = 10,                     
   pcrossover = 0.8,
   pmutation = 0.5, 
@@ -61,7 +61,7 @@ plot(ga_result)
 
 # Print results
 cat("Best solution found:\n")
-best_individual = matrix(ga_result@solution, nrow = 3, byrow = TRUE)
+# best_individual = matrix(ga_result@solution, nrow = 3, byrow = TRUE)
 print(best_individual)
 
 

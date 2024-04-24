@@ -1,22 +1,75 @@
+source("dfs.R")
+
 repair_individual_unused <- function(adj_matrix) {
-  # Get the number of rows (or columns, since it's square)
   n <- nrow(adj_matrix)
   
-  # Check for columns with all zeros
+  # Check for rows and columns with all zeros
+  row_sums <- rowSums(adj_matrix)
   col_sums <- colSums(adj_matrix)
-  empty_columns <- which(col_sums == 0)
   
-  # Randomly add a '1' to each empty column avoiding the diagonal and the first row
-  if (length(empty_columns) > 0) {
-    for (col in empty_columns) {
-      # Sample from rows excluding the diagonal element and the first row for the current column
-      valid_rows <- setdiff(1:n, c(col, 1))  # Remove the diagonal and first row from possible choices
-      if (length(valid_rows) > 0) {
-        row_to_mutate <- sample(valid_rows, 1)  # Select one valid row at random
-        adj_matrix[row_to_mutate, col] <- 1  # Set the selected position to 1
+  empty_indices <- which(row_sums == 0 & col_sums == 0)
+
+  if (length(empty_indices) > 0) {
+    for (k in empty_indices) {
+      # Decide randomly whether to modify the row or column, only if there's a choice below the diagonal
+        if (runif(1) < 0.5) {
+          # Modify a column: choose a row index below the diagonal element
+          valid_rows <- if (k == n) 2:(n-1) else (k+1):n # start from the second row
+          if (k <= n) {
+            # Remove the diagonal element specifically
+            valid_rows <- valid_rows[valid_rows != k]
+          }
+          if (length(valid_rows) > 0) {
+            if (length(valid_rows) == 1) {
+              adj_matrix[valid_rows, k] <- 1
+            } else {
+              condition_met <- TRUE
+              while (length(valid_rows) > 0 && condition_met) {
+                chosen_row <- sample(valid_rows, 1)
+                # print(valid_rows)
+                adj_matrix_mod <- adj_matrix
+                adj_matrix_mod[chosen_row, k] <- 1
+                valid_rows <- valid_rows[-which(valid_rows == chosen_row)]
+                g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
+                condition_met <- has_cycle_dfs(g, adj_matrix_mod)
+                # condition_met <- !is.infinite(girth(g)$girth)
+                  if (!condition_met) {
+                    adj_matrix <- adj_matrix_mod
+                    break  # Exit the loop if the condition is met
+                }
+              }
+            }
+          }
+        } else {
+          # Modify a row: choose a column index below the diagonal element
+          valid_cols <- if (k == n) 1:(n-1) else (k+1):n # start from the second row
+          if (k <= n) {
+            # Remove the diagonal element specifically
+            valid_cols <- valid_cols[valid_cols != k]
+          }
+          if (length(valid_cols) > 0) {
+            if (length(valid_cols) == 1) {
+              adj_matrix[k, valid_cols] <- 1
+            } else {
+              condition_met <- TRUE
+              while (length(valid_cols) > 0 && condition_met) {
+                chosen_col <- sample(valid_cols, 1)
+                # print(valid_cols)
+                adj_matrix_mod <- adj_matrix
+                adj_matrix_mod[chosen_col, k] <- 1
+                valid_cols <- valid_cols[-which(valid_cols == chosen_col)]
+                g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
+                condition_met <- has_cycle_dfs(g, adj_matrix_mod)
+                # condition_met <- !is.infinite(girth(g)$girth)
+                if (!condition_met) {
+                  adj_matrix <- adj_matrix_mod
+                  break  # Exit the loop if the condition is met
+                }
+              }
+            }
+          }
       }
     }
   }
   return(adj_matrix)
 }
-

@@ -4,11 +4,12 @@ library(cSEM.DGP)
 
 # Assume 'create_sem_model_string_from_matrix' is defined in this script
 source("model_generated.R")
+source("fitness_generated.R")
 
 # Adjacency matrix where rows and columns correspond to variables
 # '1' indicates a direct influence from column variable to row variable
 adj_matrix <- matrix(c(0, 0, 0,
-                       1, 0, 0,
+                       1, 0, 1,
                        0, 1, 0),
                      byrow = TRUE, nrow = 3)
 
@@ -63,6 +64,8 @@ model_string <- '
   eta2 ~ eta1
   eta3 ~ eta2
 '
+
+combined_fitness_fixed(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated)
 
 # Perform cSEM analysis
 out <- csem(.data = generated_data, .model = model_string_generated)

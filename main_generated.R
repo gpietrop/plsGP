@@ -1,5 +1,4 @@
 library(GA)
-library(cSEM.DGP)
 
 source("fitness_generated.R")
 source("ga_operators.R")

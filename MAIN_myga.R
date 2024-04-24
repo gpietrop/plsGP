@@ -28,8 +28,8 @@ myMutation <- function(object, parent) {
 ga_control <- ga(
   type = "binary",                   
   nBits = 6 * 6,                    
-  popSize = 100,                     
-  maxiter = 1000,                    
+  popSize = 50,                     
+  maxiter = 100,                    
   pmutation = 1.0,
   pcrossover = 0.8,
   fitness = combined_fitness_fixed, 

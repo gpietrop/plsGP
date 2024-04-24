@@ -38,7 +38,8 @@ combined_fitness_fixed <- function(matrix_vector) {
   g <- graph_from_adjacency_matrix(adj_matrix, mode = "directed", diag = FALSE)
   
   # Check for cycles using girth, which finds the shortest cycle
-  has_cycle <- !is.infinite(girth(g)$girth)
+  # has_cycle <- !is.infinite(girth(g)$girth)
+  has_cycle <- has_cycle_dfs(g, adj_matrix)
   if (has_cycle) {
     # cat("cicle")
     return(-10000)  # The matrix has cyclic dependencies

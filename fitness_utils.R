@@ -1,3 +1,5 @@
+source("dfs.R")
+
 repair_individual_unused <- function(adj_matrix) {
   n <- nrow(adj_matrix)
   
@@ -29,7 +31,8 @@ repair_individual_unused <- function(adj_matrix) {
                 adj_matrix_mod[chosen_row, k] <- 1
                 valid_rows <- valid_rows[-which(valid_rows == chosen_row)]
                 g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
-                condition_met <- !is.infinite(girth(g)$girth)
+                condition_met <- has_cycle_dfs(g, adj_matrix_mod)
+                # condition_met <- !is.infinite(girth(g)$girth)
                   if (!condition_met) {
                     adj_matrix <- adj_matrix_mod
                     break  # Exit the loop if the condition is met
@@ -56,7 +59,8 @@ repair_individual_unused <- function(adj_matrix) {
                 adj_matrix_mod[chosen_col, k] <- 1
                 valid_cols <- valid_cols[-which(valid_cols == chosen_col)]
                 g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
-                condition_met <- !is.infinite(girth(g)$girth)
+                condition_met <- has_cycle_dfs(g, adj_matrix_mod)
+                # condition_met <- !is.infinite(girth(g)$girth)
                 if (!condition_met) {
                   adj_matrix <- adj_matrix_mod
                   break  # Exit the loop if the condition is met

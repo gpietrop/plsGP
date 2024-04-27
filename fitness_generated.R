@@ -69,7 +69,8 @@ fitness <- function(adj_matrix, variables, measurement_model, structural_coeffic
   
   # Calculate model selection criteria
   model_criteria <- calculateModelSelectionCriteria(out, 
-                                                    .by_equation = FALSE)
+                                                    .by_equation = FALSE,
+                                                    .only_structural = FALSE)
   # Extract the AIC values
   aic_values <- model_criteria$AIC
   # Return the AIC values as a vector

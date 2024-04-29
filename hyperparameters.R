@@ -6,12 +6,12 @@ n_variables <- length(variables)
 
 # Measurement model (specify which manifest variables are associated with which latent variables)
 measurement_model <- list(
-  eta1 = c("y1", "y2", "y3", "y4"),
-  eta2 = c("y5", "y6", "y7", "y8"),
-  eta3 = c("y9", "y10", "y11", "y12"), 
-  eta4 = c("y13", "y14", "y15", "y16"),
-  eta5 = c("y17", "y18", "y19", "y20"),
-  eta6 = c("y21", "y22", "y23", "y24")
+  eta1 = c("y1", "y2", "y3"),
+  eta2 = c("y4", "y5", "y6"),
+  eta3 = c("y7", "y8", "y9"), 
+  eta4 = c("y10", "y11", "y12"),
+  eta5 = c("y13", "y14", "y15"),
+  eta6 = c("y16", "y17", "y18")
 )
 
 # Types of variables (composite or reflective)

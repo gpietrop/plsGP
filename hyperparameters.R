@@ -1,5 +1,5 @@
 library(cSEM.DGP)
-
+library(cSEM)
 # List of variable names
 variables <- c("eta1", "eta2", "eta3", "eta4", "eta5", "eta6") # dir_names in the other script
 n_variables <- length(variables)
@@ -32,37 +32,58 @@ model_string_true <- '
   eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
   eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
   y1 ~~ 0.5*y2 + 0.5*y3
-  y2 ~~ 0.5*y1 + 0.5*y3
-  y3 ~~ 0.5*y1 + 0.5*y2
+  y2 ~~ 0.5*y3
   y4 ~~ 0.2*y5
-  y5 ~~ 0.2*y4 + 0.4*y6
-  y6 ~~ 0.4*y5
+  y5 ~~ 0.4*y6
   y7 ~~ 0.25*y8 + 0.4*y9
-  y8 ~~ 0.25*y7 + 0.16*y9
-  y9 ~~ 0.4*y7 + 0.16*y8
+  y8 ~~ 0.16*y9
   y10 ~~ 0.5*y11 + 0.5*y12
-  y11 ~~ 0.5*y10 + 0.5*y12
-  y12 ~~ 0.5*y10 + 0.5*y11
+  y11 ~~ 0.5*y12
   y13 ~~ 0.2*y14
-  y14 ~~ 0.2*y13 + 0.4*y15
-  y15 ~~ 0.4*y14
+  y14 ~~ 0.4*y15
   y16 ~~ 0.25*y17 + 0.4*y18
-  y17 ~~ 0.25*y16 + 0.16*y18
-  y18 ~~ 0.4*y16 + 0.16*y17
-  
+  y17 ~~ 0.16*y18
   
   # Structural model
-  eta4 ~ 0.5*eta1 + 0.5*eta2 + 0.5*eta3
-  eta5 ~ 0.5*eta4
+  eta4 ~ 0.3*eta1 + 0.5*eta2 + 0.4*eta3
+  eta5 ~ 0.8*eta4
   eta6 ~ 0.5*eta5
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
-  eta2 ~~ 0.3*eta1 + 0.4*eta3
-  eta3 ~~ 0.5*eta1 + 0.4*eta2
+  eta2 ~~ 0.4*eta3
 '
 
 # Generate data based on the specified model
 dataset_generated <- generateData(
   .model = model_string_true,    # Use the generated model string
   .n     = 200,             # Number of observations
-  .return_type = "data.frame"
+  .return_type = "data.frame",
+  .empirical = FALSE
 )
+
+# cor(dataset_generated)
+# 
+# model_est <- '
+#   # Measurement model
+#   eta1 <~ y1 + y2 + y3 
+#   eta2 <~ y4 + y5 + y6 
+#   eta3 <~ y7 + y8 + y9 
+#   eta4 <~ y10 + y11 + y12 
+#   eta5 <~ y13 + y14 + y15 
+#   eta6 <~ y16 + y17 + y18 
+#   
+#   # Structural model
+#   eta4 ~ eta1 + eta2 + eta3
+#   eta5 ~ eta4
+#   eta6 ~ eta5
+# '
+# 
+# out = csem(.data = dataset_generated, .model = model_est)
+# # verify(out)
+# # summarize(out)
+# 
+# model_criteria <- calculateModelSelectionCriteria(out, 
+#                                                   .by_equation = FALSE,
+#                                                   .only_structural = FALSE)
+# # Extract the AIC values
+# aic_values <- model_criteria$AIC
+# print(aic_values)

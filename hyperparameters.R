@@ -23,18 +23,41 @@ type_of_variable <- c(eta1 = "composite", eta2 = "composite",
 structural_coefficients <- list()
 
 model_string_true <- '
+
   # Measurement model
-  eta1 =~ 0.3*y1 + 0.5*y2 + 0.6*y3 + 0.5*y4
-  eta2 =~ 0.4*y5 + 0.6*y6 + 0.6*y7 + 0.5*y8
-  eta3 =~ 0.4*y9 + 0.6*y10 + 0.4*y11 + 0.5*y12
-  eta4 =~ 0.7*y13 + 0.5*y14 + 0.4*y15 + 0.5*y16
-  eta5 =~ 0.6*y17 + 0.7*y18 + 0.3*y19 + 0.5*y20
-  eta6 =~ 0.6*y21 + 0.7*y22 + 0.4*y23 + 0.6*y24
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y1 + 0.5*y3
+  y3 ~~ 0.5*y1 + 0.5*y2
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.2*y4 + 0.4*y6
+  y6 ~~ 0.4*y5
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.25*y7 + 0.16*y9
+  y9 ~~ 0.4*y7 + 0.16*y8
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y10 + 0.5*y12
+  y12 ~~ 0.5*y10 + 0.5*y11
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.2*y13 + 0.4*y15
+  y15 ~~ 0.4*y14
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.25*y16 + 0.16*y18
+  y18 ~~ 0.4*y16 + 0.16*y17
+  
   
   # Structural model
   eta4 ~ 1*eta1 + 1*eta2 + 1*eta3
   eta5 ~ 1*eta4
   eta6 ~ 1*eta5
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.3*eta1 + 0.4*eta3
+  eta3 ~~ 0.5*eta1 + 0.4*eta2
 '
 
 # Generate data based on the specified model

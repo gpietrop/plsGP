@@ -52,9 +52,9 @@ model_string_true <- '
   
   
   # Structural model
-  eta4 ~ 1*eta1 + 1*eta2 + 1*eta3
-  eta5 ~ 1*eta4
-  eta6 ~ 1*eta5
+  eta4 ~ 0.5*eta1 + 0.5*eta2 + 0.5*eta3
+  eta5 ~ 0.5*eta4
+  eta6 ~ 0.5*eta5
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.3*eta1 + 0.4*eta3
   eta3 ~~ 0.5*eta1 + 0.4*eta2

@@ -6,7 +6,7 @@ library(igraph)
 source("model_generated.R")
 source("fitness_utils.R")
 
-best_individuals_all <- list()
+best_individuals_all <<- list()
 best_individual <<- NULL
 best_fitness <<- -Inf
 

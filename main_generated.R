@@ -8,8 +8,8 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--popSize"), type="integer", default=5000, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=1000, help="Maximum number of iterations"),
+  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=50, help="Maximum number of iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
@@ -47,6 +47,7 @@ write.csv(hyperparams, file.path(subdir, "hyperparameters.csv"), row.names = FAL
 # Function to run GA with different seeds
 run_ga <- function(seed) {
   # Reset best individual and fitness at the start of each run
+  best_individuals_all <<- list()
   best_individual <<- NULL
   best_fitness <<- -Inf
   
@@ -74,7 +75,21 @@ run_ga <- function(seed) {
   
   # Save GA's best fitness
   write.csv(data.frame(Fitness = - ga_control@fitnessValue), file.path(subdir, paste0(seed, "_fitness", ".csv")), row.names = FALSE)
-
+  
+  # Create a directory for elites if it does not exist
+  elite_dir <- file.path(subdir, paste0(seed, "_elites"))
+  if (!dir.exists(elite_dir)) {
+    dir.create(elite_dir)
+  }
+  
+  # Save the elites
+  if (exists("best_individuals_all") && length(best_individuals_all) > 0) {
+    for (i in seq_along(best_individuals_all)) {
+      elite_df <- as.data.frame(best_individuals_all[[i]])
+      colnames(elite_df) <- variables  # Assuming you want to use 'variables' as column names
+      write.csv(elite_df, file.path(elite_dir, paste0(seed, "_elite_", i, ".csv")), row.names = FALSE)
+    }
+  }
 }
 
 # Loop over a range of seeds

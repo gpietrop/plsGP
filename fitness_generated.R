@@ -6,7 +6,7 @@ library(igraph)
 source("model_generated.R")
 source("fitness_utils.R")
 
-admiss_individuals_all <- list()
+best_individuals_all <- list()
 best_individual <<- NULL
 best_fitness <<- -Inf
 
@@ -31,7 +31,7 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   # has_cycle <- !is.infinite(girth(g)$girth)
   has_cycle <- has_cycle_dfs(g, adj_matrix)
   if (has_cycle) {
-    return(-10000)  # The matrix has cyclic dependencies
+    return(-100000)  # The matrix has cyclic dependencies
   } 
   
   # Check if the solution is admissible 
@@ -39,21 +39,22 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   out <- csem(.data = dataset_generated,.model = model_string)
   ver = verify(out)
   if (!sum(ver) == 0) {
-    return(-10000)  # Penalize configurations where any construct is unused
+    return(-100000)  # Penalize configurations where any construct is unused
   }
   
   # SEM fitness calculation (using the negative of AIC to make higher values more fit)
   sem_fitness <- -fitness(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated)
   # print(sem_fitness)
   if (is.na(sem_fitness)) {
-    return(-10000)
+    return(-100000)
   }
   
   # Store the modified individual
-  admiss_individuals_all <<- append(admiss_individuals_all, list(adj_matrix))
+  # admiss_individuals_all <<- append(admiss_individuals_all, list(adj_matrix))
   if (sem_fitness > best_fitness) {
     best_individual <<- adj_matrix
     best_fitness <<- sem_fitness
+    best_individuals_all <<- append(best_individuals_all, list(adj_matrix))
   }
   
   return(sem_fitness)
@@ -72,7 +73,7 @@ fitness <- function(adj_matrix, variables, measurement_model, structural_coeffic
                                                     .by_equation = FALSE,
                                                     .only_structural = FALSE)
   # Extract the AIC values
-  aic_values <- model_criteria$AIC
+  aic_values <- model_criteria$BIC
   # Return the AIC values as a vector
   # return(as.vector(aic_values))
   return(aic_values)

@@ -61,7 +61,7 @@ dataset_generated <- generateData(
 )
 
 # cor(dataset_generated)
-# 
+
 # model_est <- '
 #   # Measurement model
 #   eta1 <~ y1 + y2 + y3 
@@ -72,9 +72,10 @@ dataset_generated <- generateData(
 #   eta6 <~ y16 + y17 + y18 
 #   
 #   # Structural model
-#   eta4 ~ eta1 + eta2 + eta3
-#   eta5 ~ eta4
-#   eta6 ~ eta5
+#   eta2 ~ eta4 + eta6
+#   eta3 ~ eta2 + eta4 + eta6
+#   eta4 ~ eta1 + eta6 
+#   eta5 ~ eta2 + eta3 + eta4 + eta6
 # '
 # 
 # out = csem(.data = dataset_generated, .model = model_est)
@@ -87,3 +88,4 @@ dataset_generated <- generateData(
 # # Extract the AIC values
 # aic_values <- model_criteria$AIC
 # print(aic_values)
+# 

@@ -1,27 +1,34 @@
 library(GA)
+library(optparse)
 
 source("fitness_generated.R")
 source("ga_operators.R")
 source("hyperparameters.R")
+source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--popSize"), type="integer", default=1000, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=100, help="Maximum number of iterations"),
+  make_option(c("--popSize"), type="integer", default=5000, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=1000, help="Maximum number of iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
-  make_option(c("--seed_start"), type="integer", default=1, help="First seed for the GA"),
+  make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
   make_option(c("--seed_end"), type="integer", default=10, help="Last seed for the GA")
 )
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
+
+# get the AIC of the true model 
+aic_true = run_sem_model(dataset_generated)
+cat("The true model has AIC: ", aic_true, "\n")
 
 # Save the results and hyperparameters
 hyperparams <- data.frame(
   "Population Size" = opt$popSize,
   "Max Iterations" = opt$maxiter,
   "Mutation Rate" = opt$pmutation,
-  "Crossover Rate" = opt$pcrossover
+  "Crossover Rate" = opt$pcrossover,
+  "True AIC" = aic_true 
 )
 
 # Define a results directory based on the current timestamp
@@ -74,4 +81,7 @@ run_ga <- function(seed) {
 seed_start <- opt$seed_start
 seed_end <- opt$seed_end
 all_results <- lapply(seed_start:seed_end, run_ga)
+
+
+
 

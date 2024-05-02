@@ -2,7 +2,7 @@ source("analysis_utils.R")
 
 
 folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/res_generated/"
-run <- "run_2024-04-30_14"
+run <- "run_2024-05-02_11"
 path <- paste0(folder_path, run)
 best_individual <- get_best_individual(path)
 print(best_individual)

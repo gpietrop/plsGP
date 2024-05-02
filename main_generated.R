@@ -8,7 +8,7 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
+  make_option(c("--popSize"), type="integer", default=50, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=50, help="Maximum number of iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
@@ -62,7 +62,7 @@ run_ga <- function(seed) {
     elitism = TRUE,
     parallel = FALSE,
     seed = seed,
-    mutation = myMutation
+    mutation = myMutationTriang
     )
   
   # Save tracked best individual

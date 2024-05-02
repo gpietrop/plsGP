@@ -29,7 +29,7 @@ run_sem_model <- function(dataset_generated) {
                                                     .only_structural = FALSE)
   
   # Extract the AIC values
-  aic_values <- model_criteria$AIC
+  aic_values <- model_criteria$BIC
   
   # Print the AIC values
   print(aic_values)

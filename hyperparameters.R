@@ -22,7 +22,7 @@ type_of_variable <- c(eta1 = "composite", eta2 = "composite",
 # Structural coefficients (optional and unused in the provided function)
 structural_coefficients <- list()
 
-model_string_true <- '
+str1_small <- '
 
   # Measurement model
   eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
@@ -45,21 +45,42 @@ model_string_true <- '
   y17 ~~ 0.16*y18
   
   # Structural model
-  eta4 ~ 0.3*eta1 + 0.5*eta2 + 0.4*eta3
-  eta5 ~ 0.8*eta4
-  eta6 ~ 0.5*eta5
+  eta4 ~ 0.3*eta1 + 0.2*eta2 + 0.25*eta3
+  eta5 ~ 0.35*eta4
+  eta6 ~ 0.25*eta5
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
 '
 
-# Generate data based on the specified model
-dataset_generated <- generateData(
-  .model = model_string_true,    # Use the generated model string
-  .n     = 200,             # Number of observations
-  .return_type = "data.frame",
-  .empirical = FALSE
-)
+str1_med <- '
 
+  # Measurement model
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y3
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.4*y6
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.16*y9
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y12
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.4*y15
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.16*y18
+  
+  # Structural model
+  eta4 ~ 0.38*eta1 + 0.35*eta2 + 0.3*eta3
+  eta5 ~ 0.45*eta4
+  eta6 ~ 0.4*eta5
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.4*eta3
+'
 # cor(dataset_generated)
 
 # model_est <- '

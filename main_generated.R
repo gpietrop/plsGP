@@ -8,9 +8,9 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str1_small", help="Model to use"),
-  make_option(c("--modeDim"), type="integer", default=200, help="Sample size"),
-  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
+  make_option(c("--model"), default="str1_med", help="Model to use"),
+  make_option(c("--modeDim"), type="integer", default=300, help="Sample size"),
+  make_option(c("--popSize"), type="integer", default=50, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
@@ -44,6 +44,9 @@ run_ga <- function(seed) {
     .return_type = "data.frame",
     .empirical = FALSE
   )
+  
+  # Save the dataset to a CSV file
+  write.csv(dataset_generated, file.path(subdir, paste0(seed, "_dataset_generated.csv")), row.names = FALSE)
   
   # get the AIC of the true model 
   aic_true = run_sem_model(dataset_generated)

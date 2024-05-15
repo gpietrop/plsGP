@@ -26,7 +26,8 @@ run_sem_model <- function(dataset_generated) {
   # Calculate model selection criteria
   model_criteria <- calculateModelSelectionCriteria(results, 
                                                     .by_equation = FALSE, 
-                                                    .only_structural = FALSE)
+                                                    .only_structural = FALSE 
+                                                    )
   
   # Extract the AIC values
   aic_values <- model_criteria$BIC

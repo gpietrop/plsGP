@@ -8,8 +8,10 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
+  make_option(c("--model"), default="str1_med", help="Model to use"),
+  make_option(c("--modeDim"), type="integer", default=300, help="Dimension of the model"),
   make_option(c("--popSize"), type="integer", default=10, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=100, help="Maximum number of iterations"),
+  make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
@@ -18,31 +20,15 @@ option_list <- list(
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
 
-# get the AIC of the true model 
-aic_true = run_sem_model(dataset_generated)
-cat("The true model has BIC: ", aic_true, "\n")
-
-# Save the results and hyperparameters
-hyperparams <- data.frame(
-  "Population Size" = opt$popSize,
-  "Max Iterations" = opt$maxiter,
-  "Mutation Rate" = opt$pmutation,
-  "Crossover Rate" = opt$pcrossover,
-  "True AIC" = aic_true 
-)
 
 # Define a results directory based on the current timestamp
-results_dir <- "res_generated"
-timestamp <- format(Sys.time(), "%Y-%m-%d_%H")
-subdir <- file.path(results_dir, paste0("run_", timestamp))
-
-# Ensure the directory exists
+results_dir <- "results"
+model_subdir <- paste(opt$model, opt$modeDim, sep="_")
+# timestamp <- format(Sys.time(), "%Y-%m-%d_%H")
+subdir <- file.path(results_dir, model_subdir)
 if (!dir.exists(subdir)) {
   dir.create(subdir, recursive = TRUE)
 }
-
-# Save hyperparameters to a CSV file (once, not in the loop)
-write.csv(hyperparams, file.path(subdir, "hyperparameters.csv"), row.names = FALSE, quote = FALSE)
 
 # Function to run GA with different seeds
 run_ga <- function(seed) {
@@ -50,6 +36,30 @@ run_ga <- function(seed) {
   best_individuals_all <<- list()
   best_individual <<- NULL
   best_fitness <<- -Inf
+  
+  # generate a different dataset
+  dataset_generated <- generateData(
+    .model = get(opt$model),    # Use the generated model string
+    .n     = opt$modeDim,             # Number of observations
+    .return_type = "data.frame",
+    .empirical = FALSE
+  )
+  
+  # get the AIC of the true model 
+  aic_true = run_sem_model(dataset_generated)
+  cat("The true model has BIC: ", aic_true, "\n")
+  
+  # Save the results and hyperparameters
+  hyperparams <- data.frame(
+    "Population Size" = opt$popSize,
+    "Max Iterations" = opt$maxiter,
+    "Mutation Rate" = opt$pmutation,
+    "Crossover Rate" = opt$pcrossover,
+    "True AIC" = aic_true 
+  )
+
+  # Save hyperparameters to a CSV file 
+  write.csv(hyperparams, file.path(subdir, paste0(seed, "_hyperparameters.csv")), row.names = FALSE, quote = FALSE)
   
   ga_control <- ga(
     type = "binary",

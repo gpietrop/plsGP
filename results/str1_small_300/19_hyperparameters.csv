@@ -1,2 +1,2 @@
 Population.Size,Max.Iterations,Mutation.Rate,Crossover.Rate,True.AIC
-100,100,1,0.8,9889.25384981917
+100,200,1,0.8,9722.11391273972

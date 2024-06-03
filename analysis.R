@@ -1,15 +1,25 @@
 source("analysis_utils.R")
 
 
-folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/res_generated/"
-run <- "run_2024-05-03_16"
+# Example usage
+# Define the specific matrix you want to check against
+specific_matrix <- matrix(
+  c(0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0,
+    1, 1, 1, 0, 0, 0,
+    0, 0, 0, 1, 0, 0,
+    0, 0, 0, 0, 1, 0),
+  nrow = 6, byrow = TRUE
+)
+
+folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results/"
+run <- "str1_small_100"
 path <- paste0(folder_path, run)
-best_individual <- get_best_individual(path)
-print(best_individual)
 
-run_number <- 1  # Replace with the desired run number
-result <- get_run_info(path, run_number)
-print(result$best_individual)
+# Call the function with the folder path and the specific matrix
+check_matrices(path, specific_matrix)
 
-visualize_fitness_distribution(path)
-
+mean_matrix <- calculate_mean_matrix(path)
+print("Mean matrix:")
+print(mean_matrix)

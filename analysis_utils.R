@@ -95,3 +95,59 @@ visualize_fitness_distribution <- function(folder_path) {
   abline(h = true_fitness, col = "red", lty = 2)
   legend("topright", legend = c("True AIC"), col = "red", lty = 2)
 }
+
+
+# Function to check if a specific matrix is contained in a larger matrix
+is_matrix_contained <- function(specific_matrix, candidate_matrix) {
+  # Check if all elements of specific_matrix that are 1 are also 1 in candidate_matrix
+  all(specific_matrix == candidate_matrix | specific_matrix == 0)
+}
+
+# Function to read all _best.csv files and check for the specific matrix
+check_matrices <- function(folder_path, specific_matrix) {
+  # List all _best.csv files
+  best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
+  total_matrices <- length(best_files)
+  matching_matrices <- 0
+  
+  # Iterate over each best file
+  for (file in best_files) {
+    candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
+    
+    if (is_matrix_contained(specific_matrix, candidate_matrix)) {
+      matching_matrices <- matching_matrices + 1
+    }
+  }
+  
+  cat("Number of matching matrices:", matching_matrices, "\n")
+  cat("Total number of matrices:", total_matrices, "\n")
+  cat("Proportion of matching matrices:", matching_matrices / total_matrices, "\n")
+  
+  return(matching_matrices / total_matrices)
+}
+
+
+# Function to calculate the mean of all matrices in _best.csv files
+calculate_mean_matrix <- function(folder_path) {
+  # List all _best.csv files
+  best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
+  
+  total_matrices <- length(best_files)
+  
+  if (total_matrices == 0) {
+    cat("No matrices found.\n")
+    return(matrix(0, nrow = 6, ncol = 6))
+  }
+  
+  sum_matrix <- matrix(0, nrow = 6, ncol = 6)
+  
+  # Iterate over each best file and sum the matrices
+  for (file in best_files) {
+    candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
+    sum_matrix <- sum_matrix + candidate_matrix
+  }
+  
+  mean_matrix <- sum_matrix / total_matrices
+  
+  return(mean_matrix)
+}

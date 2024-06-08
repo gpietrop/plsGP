@@ -14,12 +14,11 @@ specific_matrix <- matrix(
 )
 
 folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results/"
-run <- "str1_small_100"
+run <- "str1_med_500"
 path <- paste0(folder_path, run)
 
 # Call the function with the folder path and the specific matrix
-check_matrices(path, specific_matrix)
+check <- check_matrices(path, specific_matrix)
 
 mean_matrix <- calculate_mean_matrix(path)
-print("Mean matrix:")
-print(mean_matrix)
+# print(mean_matrix)

@@ -97,10 +97,16 @@ visualize_fitness_distribution <- function(folder_path) {
 }
 
 
-# Function to check if a specific matrix is contained in a larger matrix
+# Function to check if a specific matrix is contained in a candidate matrix
 is_matrix_contained <- function(specific_matrix, candidate_matrix) {
   # Check if all elements of specific_matrix that are 1 are also 1 in candidate_matrix
   all(specific_matrix == candidate_matrix | specific_matrix == 0)
+}
+
+# Function to check if a specific matrix is equal to a candidate matrix
+is_matrix_equal <- function(specific_matrix, candidate_matrix) {
+  # Check if all elements of specific_matrix are equal to those in candidate_matrix
+  all(specific_matrix == candidate_matrix)
 }
 
 # Function to read all _best.csv files and check for the specific matrix
@@ -108,22 +114,36 @@ check_matrices <- function(folder_path, specific_matrix) {
   # List all _best.csv files
   best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
   total_matrices <- length(best_files)
-  matching_matrices <- 0
+  matching_matrices_c <- 0
+  matching_matrices_e <- 0
   
   # Iterate over each best file
   for (file in best_files) {
     candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
     
     if (is_matrix_contained(specific_matrix, candidate_matrix)) {
-      matching_matrices <- matching_matrices + 1
+      matching_matrices_c <- matching_matrices_c + 1
+    }
+    if (is_matrix_equal(specific_matrix, candidate_matrix)) {
+      matching_matrices_e <- matching_matrices_e + 1
     }
   }
+  cat("Total number of experiments:", total_matrices, "\n")
   
-  cat("Number of matching matrices:", matching_matrices, "\n")
-  cat("Total number of matrices:", total_matrices, "\n")
-  cat("Proportion of matching matrices:", matching_matrices / total_matrices, "\n")
+  cat("Is the original matrix contained in the GA generated? \n")
   
-  return(matching_matrices / total_matrices)
+  cat("N_CONT:", matching_matrices_c, "\n")
+  cat("P_CONT:", matching_matrices_c / total_matrices, "\n")
+  
+  cat("Is the original matrix equal to the GA generated? \n")
+  
+  cat("N_EQUAL:", matching_matrices_e, "\n")
+  cat("P_EQUAL:", matching_matrices_e / total_matrices, "\n")
+  
+  return() # (list(
+    # proportion_contained = matching_matrices_c / total_matrices,
+    # proportion_equal = matching_matrices_e / total_matrices
+  # ))
 }
 
 
@@ -147,7 +167,9 @@ calculate_mean_matrix <- function(folder_path) {
     sum_matrix <- sum_matrix + candidate_matrix
   }
   
+  cat("Mean of all the matrices generated: \n")
   mean_matrix <- sum_matrix / total_matrices
+  print(mean_matrix)
   
-  return(mean_matrix)
+  return
 }

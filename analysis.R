@@ -14,7 +14,7 @@ specific_matrix <- matrix(
 )
 
 folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results/"
-run <- "str1_med_500"
+run <- "str1_small_300"
 path <- paste0(folder_path, run)
 
 # Call the function with the folder path and the specific matrix

@@ -8,7 +8,7 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str1_med", help="Model to use"),
+  make_option(c("--model"), default="str1_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
   make_option(c("--popSize"), type="integer", default=10, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=50, help="Maximum iterations"),
@@ -19,7 +19,6 @@ option_list <- list(
 )
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
-
 
 # Define a results directory based on the current timestamp
 results_dir <- "results_more_info"
@@ -60,23 +59,29 @@ run_ga <- function(seed) {
     "Crossover Rate" = opt$pcrossover,
     "True AIC" = aic_true 
   )
-
+  
   # Save hyperparameters to a CSV file 
   write.csv(hyperparams, file.path(subdir, paste0(seed, "_hyperparameters.csv")), row.names = FALSE, quote = FALSE)
   
-  ga_control <- ga(
-    type = "binary",
-    nBits = n_variables * n_variables,
-    popSize = opt$popSize,
-    maxiter = opt$maxiter,
-    pmutation = opt$pmutation,
-    pcrossover = opt$pcrossover,
-    fitness = function(x) combined_fitness_fixed(x, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated),
-    elitism = TRUE,
-    parallel = FALSE,
-    seed = seed,
-    mutation = myMutationTreeRowZero
+  # Time the GA execution
+  ga_time <- system.time({
+    ga_control <- ga(
+      type = "binary",
+      nBits = n_variables * n_variables,
+      popSize = opt$popSize,
+      maxiter = opt$maxiter,
+      pmutation = opt$pmutation,
+      pcrossover = opt$pcrossover,
+      fitness = function(x) combined_fitness_fixed(x, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated),
+      elitism = TRUE,
+      parallel = FALSE,
+      seed = seed,
+      mutation = myMutationTreeRowZero
     )
+  })
+  
+  # Save the computation time to a file
+  write.csv(data.frame(ComputationTime = ga_time['elapsed']), file.path(subdir, paste0(seed, "_time.csv")), row.names = FALSE)
   
   # Save tracked best individual
   if (!is.null(best_individual) && length(best_individual) != 0) {
@@ -109,7 +114,3 @@ run_ga <- function(seed) {
 seed_start <- opt$seed_start
 seed_end <- opt$seed_end
 all_results <- lapply(seed_start:seed_end, run_ga)
-
-
-
-

@@ -62,6 +62,42 @@ myMutationTriang <- function(object, parent) {
 }
 
 
+myMutationTreeRowZero <- function(object, parent) {
+  
+  mutate <- parent <- as.vector(object@population[parent,])
+  mutate_matrix <- matrix(mutate, nrow = n_variables, byrow = TRUE)
+  
+  diag(mutate_matrix) <- 0  # Set the diagonal elements to zero
+  
+  mutate_matrix[upper.tri(mutate_matrix)] <- 0
+  
+  # Ensure the first three rows are all zeros
+  mutate_matrix[1, ] <- 0
+  mutate_matrix[2, ] <- 0
+  mutate_matrix[3, ] <- 0 
+  
+  mutate_vector <- as.vector(t(mutate_matrix))
+  
+  # Create indices of lower triangular part (excluding diagonal) starting from row 4
+  indices <- which(lower.tri(matrix(1, nrow = n_variables, ncol = n_variables)) & !diag(n_variables), arr.ind = TRUE)
+  indices <- indices[indices[, 1] > 3, ]  # Exclude first three rows
+  
+  # Convert row and column indices to vector indices
+  if (length(indices) > 0) {
+    subdiag_indices <- (indices[, 1] - 1) * n_variables + indices[, 2]
+    
+    # Select a random index from the sub-diagonal indices to flip
+    if (length(subdiag_indices) > 0 && runif(1) <= 0.4) {
+      j <- sample(subdiag_indices, size = 1)
+      mutate_vector[j] <- abs(mutate_vector[j] - 1)
+    }
+  }
+  
+  # print(matrix(mutate_vector, nrow = n_variables, byrow = TRUE))
+  return(mutate_vector)
+}
+
+
 # myMutation_satisfaction <- function(object, parent) {
 #   mutate <- parent <- as.vector(object@population[parent,])
 #   mutate_matrix <- matrix(mutate, nrow = 6, byrow = TRUE)

@@ -13,8 +13,8 @@ specific_matrix <- matrix(
   nrow = 6, byrow = TRUE
 )
 
-folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results/"
-run <- "str1_small_300"
+folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_more_info/"
+run <- "str1_high_500"
 path <- paste0(folder_path, run)
 
 # Call the function with the folder path and the specific matrix

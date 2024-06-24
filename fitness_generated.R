@@ -15,12 +15,13 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   n_variables <- length(variables)
   adj_matrix <- matrix(matrix_vector, nrow = n_variables, byrow = TRUE)
   
-  diag(adj_matrix) <- 0 # Set the diagonal elements of the matrix to zero
-  adj_matrix[1, ] <- 0 # Set all elements in the first row to zero
+  # Check if the matrix meets the criteria
+  if (!check_matrix_criteria(adj_matrix)) {
+    return(-100000)  # Penalize if criteria are not met
+  }
   
   # Check each column to ensure at least one non-zero entry
   if (any(colSums(adj_matrix) == 0)) {
-    # cat("One or more constructs are not used in the structural model.\n")
     adj_matrix <- repair_individual_unused(adj_matrix)
   }
   
@@ -28,7 +29,6 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   g <- graph_from_adjacency_matrix(adj_matrix, mode = "directed", diag = FALSE)
   
   # Check for cycles using girth, which finds the shortest cycle
-  # has_cycle <- !is.infinite(girth(g)$girth)
   has_cycle <- has_cycle_dfs(g, adj_matrix)
   if (has_cycle) {
     return(-100000)  # The matrix has cyclic dependencies
@@ -44,13 +44,11 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   
   # SEM fitness calculation (using the negative of AIC to make higher values more fit)
   sem_fitness <- -fitness(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated)
-  # print(sem_fitness)
   if (is.na(sem_fitness)) {
     return(-100000)
   }
   
   # Store the modified individual
-  # admiss_individuals_all <<- append(admiss_individuals_all, list(adj_matrix))
   if (sem_fitness > best_fitness) {
     best_individual <<- adj_matrix
     best_fitness <<- sem_fitness

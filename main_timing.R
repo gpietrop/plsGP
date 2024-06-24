@@ -17,11 +17,19 @@ option_list <- list(
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
   make_option(c("--seed_end"), type="integer", default=100, help="Last seed for the GA")
 )
+
 opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
 
+if (startsWith(opt$model, "str1")) {
+  run_model <- run_sem_model_str1
+  result_dir_str = "str1"
+} else {
+  stop("Model string does not start with 'str1' or 'str2'")
+}
+
 # Define a results directory based on the current timestamp
-results_dir <- "results_more_info"
+results_dir <- file.path("results_more_info", result_dir_str)
 model_subdir <- paste(opt$model, opt$modeDim, sep="_")
 # timestamp <- format(Sys.time(), "%Y-%m-%d_%H")
 subdir <- file.path(results_dir, model_subdir)
@@ -48,7 +56,7 @@ run_ga <- function(seed) {
   write.csv(dataset_generated, file.path(subdir, paste0(seed, "_dataset_generated.csv")), row.names = FALSE)
   
   # get the AIC of the true model 
-  aic_true = run_sem_model(dataset_generated)
+  aic_true = run_model(dataset_generated)
   cat("The true model has BIC: ", aic_true, "\n")
   
   # Save the results and hyperparameters

@@ -67,6 +67,8 @@ myMutationTreeRowZero <- function(object, parent) {
   mutate <- parent <- as.vector(object@population[parent,])
   mutate_matrix <- matrix(mutate, nrow = n_variables, byrow = TRUE)
   
+  # print("before")
+  # print(mutate_matrix)
   diag(mutate_matrix) <- 0  # Set the diagonal elements to zero
   
   mutate_matrix[upper.tri(mutate_matrix)] <- 0
@@ -87,12 +89,12 @@ myMutationTreeRowZero <- function(object, parent) {
     subdiag_indices <- (indices[, 1] - 1) * n_variables + indices[, 2]
     
     # Select a random index from the sub-diagonal indices to flip
-    if (length(subdiag_indices) > 0 && runif(1) <= 0.4) {
+    if (length(subdiag_indices) > 0 && runif(1) <= 0.5) {
       j <- sample(subdiag_indices, size = 1)
       mutate_vector[j] <- abs(mutate_vector[j] - 1)
     }
   }
-  
+  # print("after")
   # print(matrix(mutate_vector, nrow = n_variables, byrow = TRUE))
   return(mutate_vector)
 }

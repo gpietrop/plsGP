@@ -8,10 +8,10 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str1_small", help="Model to use"),
+  make_option(c("--model"), default="str2_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
   make_option(c("--popSize"), type="integer", default=10, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=50, help="Maximum iterations"),
+  make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
@@ -22,8 +22,11 @@ opt_parser <- OptionParser(option_list=option_list)
 opt <- parse_args(opt_parser)
 
 if (startsWith(opt$model, "str1")) {
-  run_model <- run_sem_model_str1
+  run_specific_model <- run_sem_model_str1
   result_dir_str = "str1"
+} else if (startsWith(opt$model, "str2")) {
+  run_specific_model <- run_sem_model_str2
+  result_dir_str = "str2"
 } else {
   stop("Model string does not start with 'str1' or 'str2'")
 }
@@ -56,7 +59,7 @@ run_ga <- function(seed) {
   write.csv(dataset_generated, file.path(subdir, paste0(seed, "_dataset_generated.csv")), row.names = FALSE)
   
   # get the AIC of the true model 
-  aic_true = run_model(dataset_generated)
+  aic_true = run_specific_model(dataset_generated)
   cat("The true model has BIC: ", aic_true, "\n")
   
   # Save the results and hyperparameters
@@ -122,3 +125,4 @@ run_ga <- function(seed) {
 seed_start <- opt$seed_start
 seed_end <- opt$seed_end
 all_results <- lapply(seed_start:seed_end, run_ga)
+

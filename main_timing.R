@@ -8,7 +8,7 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str2_small", help="Model to use"),
+  make_option(c("--model"), default="str3_med", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
   make_option(c("--popSize"), type="integer", default=10, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
@@ -27,6 +27,9 @@ if (startsWith(opt$model, "str1")) {
 } else if (startsWith(opt$model, "str2")) {
   run_specific_model <- run_sem_model_str2
   result_dir_str = "str2"
+} else if (startsWith(opt$model, "str3")) {
+  run_specific_model <- run_sem_model_str3
+  result_dir_str = "str3"
 } else {
   stop("Model string does not start with 'str1' or 'str2'")
 }

@@ -15,14 +15,13 @@ combined_fitness_fixed <- function(matrix_vector, variables, measurement_model, 
   n_variables <- length(variables)
   adj_matrix <- matrix(matrix_vector, nrow = n_variables, byrow = TRUE)
   
-  # Check if the matrix meets the criteria
-  if (!check_matrix_criteria(adj_matrix)) {
-    return(-100000)  # Penalize if criteria are not met
-  }
-  
   # Check each column to ensure at least one non-zero entry
   if (any(colSums(adj_matrix) == 0)) {
     adj_matrix <- repair_individual_unused(adj_matrix)
+  }
+  
+  if (!check_matrix_criteria(adj_matrix)) {
+    return(-100000)  # Penalize if criteria are not met
   }
   
   # Convert the matrix to an igraph object

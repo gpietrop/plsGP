@@ -8,9 +8,9 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str3_med", help="Model to use"),
+  make_option(c("--model"), default="str2_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
-  make_option(c("--popSize"), type="integer", default=10, help="Population size"),
+  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),

@@ -9,8 +9,8 @@ source("run_model.R")
 # Parse options with optparse
 option_list <- list(
   make_option(c("--model"), default="str2_small", help="Model to use"),
-  make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
-  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
+  make_option(c("--modeDim"), type="integer", default=50, help="Sample size"),
+  make_option(c("--popSize"), type="integer", default=50, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
@@ -35,10 +35,12 @@ if (startsWith(opt$model, "str1")) {
 }
 
 # Define a results directory based on the current timestamp
-results_dir <- file.path("results_paper", result_dir_str)
+hyperparam_subdir = paste(opt$maxiter, opt$popSize, sep = "_")
+results_dir <- file.path("results_paper", hyperparam_subdir)
+results_subdir <- file.path(results_dir, result_dir_str)
 model_subdir <- paste(opt$model, opt$modeDim, sep="_")
 # timestamp <- format(Sys.time(), "%Y-%m-%d_%H")
-subdir <- file.path(results_dir, model_subdir)
+subdir <- file.path(results_subdir, model_subdir)
 if (!dir.exists(subdir)) {
   dir.create(subdir, recursive = TRUE)
 }

@@ -89,7 +89,7 @@ myMutationTreeRowZero <- function(object, parent) {
     subdiag_indices <- (indices[, 1] - 1) * n_variables + indices[, 2]
     
     # Select a random index from the sub-diagonal indices to flip
-    if (length(subdiag_indices) > 0 && runif(1) <= 0.5) {
+    if (length(subdiag_indices) > 0 && runif(1) <= 0.3) {
       j <- sample(subdiag_indices, size = 1)
       mutate_vector[j] <- abs(mutate_vector[j] - 1)
     }

@@ -35,7 +35,7 @@ if (startsWith(opt$model, "str1")) {
 }
 
 # Define a results directory based on the current timestamp
-results_dir <- file.path("results_def", result_dir_str)
+results_dir <- file.path("results_paper", result_dir_str)
 model_subdir <- paste(opt$model, opt$modeDim, sep="_")
 # timestamp <- format(Sys.time(), "%Y-%m-%d_%H")
 subdir <- file.path(results_dir, model_subdir)

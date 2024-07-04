@@ -8,7 +8,7 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str2_small", help="Model to use"),
+  make_option(c("--model"), default="str1_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
   make_option(c("--popSize"), type="integer", default=100, help="Population size"),
   make_option(c("--maxiter"), type="integer", default=200, help="Maximum iterations"),

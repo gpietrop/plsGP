@@ -33,9 +33,9 @@ check_matrix_criteriaTreeRowZero <- function(adj_matrix) {
   }
   
   # Check if all elements in the upper triangular matrix are zeros
-  if (any(adj_matrix[upper.tri(adj_matrix)] != 0)) {
-    return(FALSE)
-  }
+  # if (any(adj_matrix[upper.tri(adj_matrix)] != 0)) {
+  #   return(FALSE)
+  # }
   
   return(TRUE)
 }

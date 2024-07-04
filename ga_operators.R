@@ -45,7 +45,7 @@ myMutationTreeRowZero <- function(object, parent) {
   # print(mutate_matrix)
   diag(mutate_matrix) <- 0  # Set the diagonal elements to zero
   
-  mutate_matrix[upper.tri(mutate_matrix)] <- 0
+  # mutate_matrix[upper.tri(mutate_matrix)] <- 0
   
   # Ensure the first three rows are all zeros
   mutate_matrix[1, ] <- 0
@@ -55,15 +55,19 @@ myMutationTreeRowZero <- function(object, parent) {
   mutate_vector <- as.vector(t(mutate_matrix))
   
   # Create indices of lower triangular part (excluding diagonal) starting from row 4
-  indices <- which(lower.tri(matrix(1, nrow = n_variables, ncol = n_variables)) & !diag(n_variables), arr.ind = TRUE)
+  indices <- which(!diag(n_variables), arr.ind = TRUE)
   indices <- indices[indices[, 1] > 3, ]  # Exclude first three rows
+  
+  # Create indices for the diagonal and first three rows excluding the diagonal elements
+  # index_matrix <- matrix(1:(n_variables * n_variables), nrow = n_variables, ncol = n_variables)
+  # indices <- which((row(index_matrix) <= 3 | row(index_matrix) == col(index_matrix)) & row(index_matrix) != col(index_matrix), arr.ind = TRUE)
   
   # Convert row and column indices to vector indices
   if (length(indices) > 0) {
     subdiag_indices <- (indices[, 1] - 1) * n_variables + indices[, 2]
     
-    # Select a random index from the sub-diagonal indices to flip
-    if (length(subdiag_indices) > 0 && runif(1) <= 0.3) {
+    # Select a random index from the sub-diagonal indices to flip WAS 0.3
+    if (length(subdiag_indices) > 0 && runif(1) <= 0.4) {
       j <- sample(subdiag_indices, size = 1)
       mutate_vector[j] <- abs(mutate_vector[j] - 1)
     }

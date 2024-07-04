@@ -8,14 +8,15 @@ source("run_model.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str1_med", help="Model to use"),
+  make_option(c("--model"), default="str2_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
-  make_option(c("--popSize"), type="integer", default=20, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
+  make_option(c("--popSize"), type="integer", default=100, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=200, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
-  make_option(c("--seed_end"), type="integer", default=99, help="Last seed for the GA")
+  make_option(c("--seed_end"), type="integer", default=99, help="Last seed for the GA"),
+  make_option(c("--treeRows"), type="logical", default=TRUE, help="Use treeRow-specific mutation and fitness")
 )
 
 opt_parser <- OptionParser(option_list=option_list)
@@ -35,7 +36,7 @@ if (startsWith(opt$model, "str1")) {
 }
 
 # Define a results directory based on the current timestamp
-hyperparam_subdir = paste(opt$maxiter, opt$popSize, sep = "_")
+hyperparam_subdir = paste(opt$maxiter, opt$popSize, opt$treeRows, sep = "_")
 results_dir <- file.path("results_paper", hyperparam_subdir)
 results_subdir <- file.path(results_dir, result_dir_str)
 model_subdir <- paste(opt$model, opt$modeDim, sep="_")
@@ -73,7 +74,8 @@ run_ga <- function(seed) {
     "Max Iterations" = opt$maxiter,
     "Mutation Rate" = opt$pmutation,
     "Crossover Rate" = opt$pcrossover,
-    "True AIC" = aic_true 
+    "True AIC" = aic_true, 
+    "TreeRows" = opt$treeRows
   )
   
   # Save hyperparameters to a CSV file 
@@ -81,6 +83,10 @@ run_ga <- function(seed) {
   
   # Time the GA execution
   ga_time <- system.time({
+    
+    fitness_function <- if (opt$treeRows) myFitnessTreeRowZero else myFitness
+    mutation_function <- if (opt$treeRows) myMutationTreeRowZero else myMutation
+    
     ga_control <- ga(
       type = "binary",
       nBits = n_variables * n_variables,
@@ -88,11 +94,11 @@ run_ga <- function(seed) {
       maxiter = opt$maxiter,
       pmutation = opt$pmutation,
       pcrossover = opt$pcrossover,
-      fitness = function(x) combined_fitness_fixed(x, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated),
+      fitness = function(x) fitness_function(x, variables, measurement_model, structural_coefficients, type_of_variable, dataset_generated),
       elitism = TRUE,
       parallel = FALSE,
       seed = seed,
-      mutation = myMutationTreeRowZero
+      mutation = mutation_function
     )
   })
   

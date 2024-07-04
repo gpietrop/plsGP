@@ -2,8 +2,8 @@ source("dfs.R")
 
 
 check_matrix_criteria <- function(adj_matrix) {
-  # Check if the first three rows are all zeros
-  if (any(rowSums(adj_matrix[1:3, ]) != 0)) {
+  # Check if the first rows is all zeros
+  if (any(rowSums(adj_matrix[1, , drop = FALSE]) != 0)) {
     return(FALSE)
   }
   
@@ -16,6 +16,26 @@ check_matrix_criteria <- function(adj_matrix) {
   if (any(adj_matrix[upper.tri(adj_matrix)] != 0)) {
     return(FALSE)
   }
+  
+  return(TRUE)
+}
+
+
+check_matrix_criteriaTreeRowZero <- function(adj_matrix) {
+  # Check if the first three rows are all zeros
+  if (any(rowSums(adj_matrix[1:3, ]) != 0)) {
+    return(FALSE)
+  }
+  
+  # Check if the diagonal elements are all zeros
+  if (any(diag(adj_matrix) != 0)) {
+    return(FALSE)
+  }
+  
+  # Check if all elements in the upper triangular matrix are zeros
+  # if (any(adj_matrix[upper.tri(adj_matrix)] != 0)) {
+  #   return(FALSE)
+  # }
   
   return(TRUE)
 }

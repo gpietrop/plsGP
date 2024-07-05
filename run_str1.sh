@@ -5,7 +5,7 @@ eval "$(conda shell.bash hook)"
 conda activate plsGP
 
 # Array of models and dimensions
-models=("str1_high", "str1_small" "str1_med")
+models=("str1_high" "str1_small" "str1_med")
 dimensions=(100 250 500)
 
 # Run R scripts in parallel

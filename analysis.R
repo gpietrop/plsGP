@@ -8,13 +8,13 @@ specific_matrix <- matrix(
     0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0,
     1, 1, 1, 0, 0, 0,
-    0, 0, 0, 1, 0, 0,
-    0, 0, 0, 0, 1, 0),
+    1, 1, 1, 1, 0, 0,
+    1, 1, 1, 1, 1, 0),
   nrow = 6, byrow = TRUE
 )
 
-folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_more_info/"
-run <- "str1_high_500"
+folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str3/"
+run <- "str3_med_500"
 path <- paste0(folder_path, run)
 
 # Call the function with the folder path and the specific matrix

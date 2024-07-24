@@ -169,7 +169,7 @@ calculate_mean_matrix <- function(folder_path) {
   
   cat("Mean of all the matrices generated: \n")
   mean_matrix <- sum_matrix / total_matrices
-  print(mean_matrix)
+  print(round(mean_matrix, 2))
   
   return
 }

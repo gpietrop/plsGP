@@ -1,3 +1,4 @@
+setwd(getwd())
 source("analysis_utils.R")
 
 
@@ -14,7 +15,11 @@ specific_matrix <- matrix(
 )
 
 folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str3/"
-run <- "str3_med_500"
+run <- "str3_med_100"
+
+# folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str2/str2_small_100/"
+# run <- "4"
+
 path <- paste0(folder_path, run)
 
 # Call the function with the folder path and the specific matrix

@@ -11,14 +11,14 @@ option_list <- list(
   make_option(c("--model"), default="str1_high", help="Model to use"),
   # make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
   make_option(c("--popSize"), type="integer", default=20, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
+  make_option(c("--maxiter"), type="integer", default=50, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
-  make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
+  make_option(c("--seed_start"), type="integer", default=3, help="First seed for the GA"),
   make_option(c("--seed_end"), type="integer", default=99, help="Last seed for the GA"),
   make_option(c("--treeRows"), type="logical", default=TRUE, help="Use treeRow-specific mutation and fitness"),
   make_option(c("--dataset_path"), 
-              default="/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str1/str1_med_100/0_dataset_generated.csv", 
+              default="/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str1/str1_med_100/24_dataset_generated.csv", 
               help="Path to the saved dataset CSV file")
 )
 

@@ -112,6 +112,10 @@ is_matrix_equal <- function(specific_matrix, candidate_matrix) {
 # Function to read all _best.csv files and check for the specific matrix
 check_matrices <- function(folder_path, specific_matrix) {
   # List all _best.csv files
+  if (!file.exists(folder_path)) {
+    stop("The specified folder path does not exist.")
+  }
+  # print(folder_path)
   best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
   total_matrices <- length(best_files)
   matching_matrices_c <- 0

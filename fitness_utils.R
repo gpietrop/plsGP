@@ -114,3 +114,15 @@ repair_individual_unused <- function(adj_matrix) {
   }
   return(adj_matrix)
 }
+
+
+check_matrix <- function(mat) {
+  n <- nrow(mat)
+  for (i in 1:n) {
+      # Check if there is at least one 1 in the row or column
+      if (all(mat[i, ] == 0) && all(mat[, i] == 0)) {
+        return(FALSE)  # Return FALSE if the condition is not met
+    }
+  }
+  return(TRUE)  # Return TRUE if the condition is met for all indices
+}

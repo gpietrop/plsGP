@@ -61,8 +61,10 @@ myFitnessTreeRowZero <- function(matrix_vector, variables, measurement_model, st
   n_variables <- length(variables)
   adj_matrix <- matrix(matrix_vector, nrow = n_variables, byrow = TRUE)
   
-  # Check each column to ensure at least one non-zero entry
-  if (any(colSums(adj_matrix) == 0)) {
+  # Check each column+row to ensure at least one non-zero entry
+  if (!check_matrix(adj_matrix)) {
+    # return(-100000)
+    # print(adj_matrix)
     adj_matrix <- repair_individual_unused(adj_matrix)
   }
   

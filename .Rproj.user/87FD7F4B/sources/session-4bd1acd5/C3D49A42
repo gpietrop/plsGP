@@ -1,26 +1,26 @@
 {
-    "id": "2C2807AA",
-    "path": "~/Desktop/pls_gp_R/run_model.R",
-    "project_path": "run_model.R",
+    "id": "C3D49A42",
+    "path": "~/Desktop/pls_gp_R/prova.R",
+    "project_path": "prova.R",
     "type": "r_source",
-    "hash": "1676626191",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1727442752146.0,
+    "created": 1727444159036.0,
     "source_on_save": false,
-    "relative_order": 9,
+    "relative_order": 8,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "51,22",
-        "scrollLine": "37"
+        "cursorPosition": "9,0",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1727448732,
+    "lastKnownWriteTime": 1727447494,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1727448732552,
+    "last_content_update": 1727447494384,
     "read_only": false,
     "read_only_alternatives": []
 }

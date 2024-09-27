@@ -112,6 +112,97 @@ str1_high <- '
   eta2 ~~ 0.4*eta3
 '
 
+str2_small <- '
+
+  # Measurement model
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y3
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.4*y6
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.16*y9
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y12
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.4*y15
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.16*y18
+  
+  # Structural model
+  eta4 ~ 0.3*eta1 + 0.2*eta2 + 0.25*eta3
+  eta5 ~ 0.35*eta4 + 0.28*eta3
+  eta6 ~ 0.25*eta5 + 0.3*eta1
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.4*eta3
+'
+
+str2_med <- '
+
+  # Measurement model
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y3
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.4*y6
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.16*y9
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y12
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.4*y15
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.16*y18
+  
+  # Structural model
+  eta4 ~ 0.38*eta1 + 0.35*eta2 + 0.3*eta3
+  eta5 ~ 0.45*eta4 + 0.4*eta3
+  eta6 ~ 0.4*eta5 + 0.35*eta1
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.4*eta3
+'
+
+
+str2_high <- '
+
+  # Measurement model
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y3
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.4*y6
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.16*y9
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y12
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.4*y15
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.16*y18
+  
+  # Structural model
+  eta4 ~ 0.3*eta1 + 0.5*eta2 + 0.4*eta3
+  eta5 ~ 0.8*eta4 + 0.23*eta3
+  eta6 ~ 0.5*eta5 + 0.6*eta1
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.4*eta3
+'
+
 str3_small <- '
 
   # Measurement model
@@ -140,8 +231,6 @@ str3_small <- '
   eta6 ~ 0.25*eta5 + 0.2*eta1 + 0.15*eta3
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
-  eta5 ~~ 0.3*eta1 + 0.5*eta3
-  eta1 ~~ 0.4*eta3
 '
 
 str3_med <- '
@@ -169,11 +258,40 @@ str3_med <- '
   # Structural model
   eta4 ~ 0.38*eta1 + 0.35*eta2 + 0.3*eta3
   eta5 ~ 0.45*eta4
-  eta6 ~ 0.4*eta5 + 0.3*eta1 + 0.3*eta3
+  eta6 ~ 0.4*eta5 + 0.35*eta1 + 0.5*eta3
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
-  eta5 ~~ 0.3*eta1 + 0.5*eta3
-  eta1 ~~ 0.4*eta3
+'
+
+
+str3_high <- '
+
+  # Measurement model
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y3
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.4*y6
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.16*y9
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y12
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.4*y15
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.16*y18
+  
+  # Structural model
+  eta4 ~ 0.3*eta1 + 0.5*eta2 + 0.4*eta3
+  eta5 ~ 0.8*eta4
+  eta6 ~ 0.5*eta5 + 0.4*eta1 + 0.28*eta3
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.4*eta3
 '
 
 str4_small <- '
@@ -204,8 +322,6 @@ str4_small <- '
   eta6 ~ 0.25*eta5 + 0.2*eta1 + 0.15*eta3 + 0.2*eta4 + 0.2*eta2
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
-  eta5 ~~ 0.3*eta1 + 0.5*eta3
-  eta1 ~~ 0.4*eta3
 '
 
 str4_med <- '
@@ -236,7 +352,35 @@ str4_med <- '
   eta6 ~ 0.28*eta5 + 0.22*eta1 + 0.2*eta3 + 0.25*eta4 + 0.2*eta2
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
-  eta5 ~~ 0.3*eta1 + 0.5*eta3
-  eta1 ~~ 0.4*eta3
+'
+
+str4_high <- '
+
+  # Measurement model
+  eta1 <~ 0.6*y1 + 0.4*y2 + 0.2*y3 
+  eta2 <~ 0.3*y4 + 0.5*y5 + 0.6*y6 
+  eta3 <~ 0.4*y7 + 0.5*y8 + 0.5*y9 
+  eta4 <~ 0.6*y10 + 0.4*y11 + 0.2*y12 
+  eta5 <~ 0.3*y13 + 0.5*y14 + 0.6*y15 
+  eta6 <~ 0.4*y16 + 0.5*y17 + 0.5*y18 
+  y1 ~~ 0.5*y2 + 0.5*y3
+  y2 ~~ 0.5*y3
+  y4 ~~ 0.2*y5
+  y5 ~~ 0.4*y6
+  y7 ~~ 0.25*y8 + 0.4*y9
+  y8 ~~ 0.16*y9
+  y10 ~~ 0.5*y11 + 0.5*y12
+  y11 ~~ 0.5*y12
+  y13 ~~ 0.2*y14
+  y14 ~~ 0.4*y15
+  y16 ~~ 0.25*y17 + 0.4*y18
+  y17 ~~ 0.16*y18
+  
+  # Structural model
+  eta4 ~ 0.3*eta1 + 0.4*eta2 + 0.4*eta3
+  eta5 ~ 0.3*eta4 + 0.28*eta1 + 0.35*eta2 + 0.28*eta3
+  eta6 ~ 0.3*eta5 + 0.22*eta1 + 0.2*eta3 + 0.25*eta4 + 0.2*eta2
+  eta1 ~~ 0.3*eta2 + 0.5*eta3   
+  eta2 ~~ 0.4*eta3
 '
 

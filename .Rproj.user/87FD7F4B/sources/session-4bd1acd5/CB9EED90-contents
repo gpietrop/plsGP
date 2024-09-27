@@ -26,14 +26,17 @@ opt <- parse_args(opt_parser)
 if (startsWith(opt$model, "str1")) {
   run_specific_model <- run_sem_model_str1
   result_dir_str = "str1"
+} else if (startsWith(opt$model, "str2")) {
+  run_specific_model <- run_sem_model_str2
+  result_dir_str = "str2"
 } else if (startsWith(opt$model, "str3")) {
   run_specific_model <- run_sem_model_str3
-  result_dir_str = "str2"
+  result_dir_str = "str3"
 } else if (startsWith(opt$model, "str4")) {
   run_specific_model <- run_sem_model_str4
   result_dir_str = "str4"
 } else {
-  stop("Model string does not start with 'str1' or 'str2'")
+  stop("Model string does not start correctly.")
 }
 
 # Define a results directory based on the current timestamp

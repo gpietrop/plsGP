@@ -3,24 +3,24 @@
     "path": "~/Desktop/pls_gp_R/main.R",
     "project_path": "main.R",
     "type": "r_source",
-    "hash": "3444390857",
+    "hash": "416726261",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1727440395927.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "67,0",
-        "scrollLine": "52"
+        "cursorPosition": "33,24",
+        "scrollLine": "20"
     },
     "folds": "",
-    "lastKnownWriteTime": 1727443225,
+    "lastKnownWriteTime": 1727443703,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1727443257702,
+    "last_content_update": 1727443703077,
     "read_only": false,
     "read_only_alternatives": []
 }

@@ -1,0 +1,8 @@
+# Load necessary libraries
+library(readr)
+library(dplyr)
+
+# Generalized function to process all files in a directory
+
+# Example usage
+process_p_values_directory("/Users/gpietrop/Desktop/pls_gp_R/results/20_10_TRUE/p_values")

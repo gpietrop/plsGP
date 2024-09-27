@@ -9,14 +9,14 @@ source("utils.R")
 
 # Parse options with optparse
 option_list <- list(
-  make_option(c("--model"), default="str2_med", help="Model to use"),
+  make_option(c("--model"), default="str3_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
-  make_option(c("--popSize"), type="integer", default=10, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=20, help="Maximum iterations"),
+  make_option(c("--popSize"), type="integer", default=200, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=100, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),
-  make_option(c("--seed_end"), type="integer", default=6, help="Last seed for the GA"),
+  make_option(c("--seed_end"), type="integer", default=99, help="Last seed for the GA"),
   make_option(c("--treeRows"), type="logical", default=TRUE, help="Use treeRow-specific mutation and fitness")
 )
 

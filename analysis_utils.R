@@ -110,41 +110,79 @@ is_matrix_equal <- function(specific_matrix, candidate_matrix) {
 }
 
 # Function to read all _best.csv files and check for the specific matrix
-check_matrices <- function(folder_path, specific_matrix) {
+check_matrices <- function(folder_path, specific_matrix, print_examples = FALSE, num_examples = 1) {
   # List all _best.csv files
   if (!file.exists(folder_path)) {
-    stop("The specified folder path does not exist.")
+    stop("Invalid folder path.")
   }
-  # print(folder_path)
+  
   best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
-  total_matrices <- length(best_files)
-  matching_matrices_c <- 0
-  matching_matrices_e <- 0
+  total <- length(best_files)
+  count_cont <- 0
+  count_cont_strict <- 0
+  count_equal <- 0
+  count_rc <- 0
+  cont_strict_examples <- list()
+  rc_examples <- list()
   
   # Iterate over each best file
   for (file in best_files) {
     candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
     
     if (is_matrix_contained(specific_matrix, candidate_matrix)) {
-      matching_matrices_c <- matching_matrices_c + 1
+      count_cont <- count_cont + 1
+      if (!is_matrix_equal(specific_matrix, candidate_matrix)) {
+        count_cont_strict <- count_cont_strict + 1
+        if (print_examples && length(cont_strict_examples) < num_examples) {
+          cont_strict_examples[[length(cont_strict_examples) + 1]] <- candidate_matrix
+        }
+      }
     }
-    if (is_matrix_equal(specific_matrix, candidate_matrix)) {
-      matching_matrices_e <- matching_matrices_e + 1
+    if (is_matrix_equal(specific_matrix, candidate_matrix)) count_equal <- count_equal + 1
+    if (is_matrix_contained(candidate_matrix, specific_matrix) && !is_matrix_equal(specific_matrix, candidate_matrix)) {
+      count_rc <- count_rc + 1
+      if (print_examples && length(rc_examples) < num_examples) {
+        rc_examples[[length(rc_examples) + 1]] <- candidate_matrix
+      }
     }
   }
-  cat("Total number of experiments:", total_matrices, "\n")
   
-  cat("Is the original matrix contained in the GA generated? \n")
+  cat("\n================== Matrix Containment Summary ==================\n")
+  cat("Total matrices analyzed:", total, "\n\n")
   
-  cat("N_CONT:", matching_matrices_c, "\n")
-  cat("P_CONT:", matching_matrices_c / total_matrices, "\n")
+  cat("1. Original matrix contained in generated matrices:\n")
+  cat("   - Total occurrences:", count_cont, "\n")
+  cat("   - Proportion:", round(count_cont / total, 4), "\n\n")
   
-  cat("Is the original matrix equal to the GA generated? \n")
+  cat("2. Original matrix strictly contained in generated matrices (not equal):\n")
+  cat("   - Total occurrences:", count_cont_strict, "\n")
+  cat("   - Proportion:", round(count_cont_strict / total, 4), "\n\n")
   
-  cat("N_EQUAL:", matching_matrices_e, "\n")
-  cat("P_EQUAL:", matching_matrices_e / total_matrices, "\n")
+  cat("3. Original matrix equal to generated matrices:\n")
+  cat("   - Total occurrences:", count_equal, "\n")
+  cat("   - Proportion:", round(count_equal / total, 4), "\n\n")
   
-  return() 
+  cat("4. Generated matrices strictly contained in original matrix:\n")
+  cat("   - Total occurrences:", count_rc, "\n")
+  cat("   - Proportion:", round(count_rc / total, 4), "\n")
+  
+  if (print_examples) {
+    if (length(cont_strict_examples) > 0) {
+      cat("\nExamples of matrices strictly contained in generated matrices:\n")
+      for (i in seq_along(cont_strict_examples)) {
+        cat("\nExample", i, "(Strictly Contained in Generated):\n")
+        print(cont_strict_examples[[i]])
+      }
+    }
+    if (length(rc_examples) > 0) {
+      cat("\nExamples of generated matrices strictly contained in the original matrix:\n")
+      for (i in seq_along(rc_examples)) {
+        cat("\nExample", i, "(Strictly Contained in Original):\n")
+        print(rc_examples[[i]])
+      }
+    }
+  }
+  cat("\n===============================================================\n")
 }
 
 

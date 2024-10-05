@@ -5,7 +5,7 @@ library(dplyr)
 source("analysis_utils.R")
 
 # Example usage
-process_p_values_directory("/Users/gpietrop/Desktop/pls_gp_R/results/20_10_TRUE/p_values")
+# process_p_values_directory("/Users/gpietrop/Desktop/pls_gp_R/results/20_10_TRUE/p_values")
 
 # Example usage
 # Define the specific matrix you want to check against

@@ -5,7 +5,7 @@ eval "$(conda shell.bash hook)"
 conda activate plsGP
 
 # Array of models and dimensions
-models=("str2_small" "str2_med" "str2_high")
+models=("str2_med" "str2_high")
 dimensions=(100 250 500)
 pop=100
 ep=200

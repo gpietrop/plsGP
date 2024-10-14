@@ -1,34 +1,66 @@
-setwd(getwd())
+# Load necessary libraries
 library(readr)
 library(dplyr)
+library(here)
 
+# Source custom utility functions
 source("analysis_utils.R")
 
-# Example usage
-# process_p_values_directory("/Users/gpietrop/Desktop/pls_gp_R/results/20_10_TRUE/p_values")
-
-# Example usage
-# Define the specific matrix you want to check against
-specific_matrix <- matrix(
-  c(0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0,
-    1, 1, 1, 0, 0, 0,
-    1, 1, 1, 1, 0, 0,
-    1, 1, 1, 1, 1, 0),
-  nrow = 6, byrow = TRUE
+# Define the specific matrices for different str values
+specific_matrices_list <- list(
+  str1 = matrix(
+    c(0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 0,
+      0, 0, 0, 1, 0, 0,
+      0, 0, 0, 0, 1, 0),
+    nrow = 6, byrow = TRUE
+  ),
+  str2 = matrix(
+    c(0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 0,
+      0, 0, 1, 1, 0, 0,
+      1, 0, 0, 0, 1, 0),
+    nrow = 6, byrow = TRUE
+  ),
+  str3 = matrix(
+    c(0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      1, 1, 1, 0, 0, 0,
+      0, 0, 0, 1, 0, 0,
+      1, 0, 1, 0, 1, 0),
+    nrow = 6, byrow = TRUE
+  )
 )
 
-folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str3/"
-run <- "str3_med_100"
+# Function to process matrices in a given folder path
+process_folder <- function(str_id, run_suffix, print_examples = FALSE, num_examples = 3) {
+  # Select the corresponding matrix based on str_id
+  specific_matrix <- specific_matrices_list[[str_id]]
+  
+  # Construct the folder path using `str_id`
+  folder_path <- here("results", "200_100_TRUE", str_id)
+  path <- file.path(folder_path, paste0(str_id, "_", run_suffix))
+  
+  # Check matrices against the specific matrix
+  check <- check_matrices(path, specific_matrix, print_examples, num_examples)
+  
+  # Calculate the mean matrix
+  mean_matrix <- calculate_mean_matrix(path)
+  
+  # Print the mean matrix (if needed)
+  print(mean_matrix)
+}
 
-# folder_path <- "/Users/gpietrop/Desktop/pls_gp_R/results_paper/200_100_TRUE/str2/str2_small_100/"
-# run <- "4"
+# Define `str_id` and `run_suffix`
+str_id <- "str1"  # Change to "str2" or "str3" as needed
+run_suffix <- "high_500"
 
-path <- paste0(folder_path, run)
+# Process the folder with the defined parameters
+process_folder(str_id, run_suffix, FALSE)
 
-# Call the function with the folder path and the specific matrix
-check <- check_matrices(path, specific_matrix)
 
-mean_matrix <- calculate_mean_matrix(path)
-# print(mean_matrix)

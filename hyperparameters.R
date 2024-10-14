@@ -257,9 +257,9 @@ str3_med <- '
   y17 ~~ 0.16*y18
   
   # Structural model
-  eta4 ~ 0.38*eta1 + 0.35*eta2 + 0.3*eta3
-  eta5 ~ 0.45*eta4
-  eta6 ~ 0.4*eta5 + 0.35*eta1 + 0.5*eta3
+  eta4 ~ 0.35*eta1 + 0.3*eta2 + 0.32*eta3
+  eta5 ~ 0.4*eta4
+  eta6 ~ 0.35*eta5 + 0.32*eta1 + 0.33*eta3
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
 '
@@ -288,12 +288,13 @@ str3_high <- '
   y17 ~~ 0.16*y18
   
   # Structural model
-  eta4 ~ 0.3*eta1 + 0.5*eta2 + 0.4*eta3
-  eta5 ~ 0.8*eta4
-  eta6 ~ 0.5*eta5 + 0.4*eta1 + 0.28*eta3
+  eta4 ~ 0.36*eta1 + 0.38*eta2 + 0.37*eta3
+  eta5 ~ 0.55*eta4
+  eta6 ~ 0.39*eta5 + 0.37*eta1 + 0.36*eta3
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
 '
+
 
 str4_small <- '
 

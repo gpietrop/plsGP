@@ -294,7 +294,7 @@ str3_high <- '
   eta1 ~~ 0.3*eta2 + 0.5*eta3   
   eta2 ~~ 0.4*eta3
 '
-
+ol
 
 str4_small <- '
 

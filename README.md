@@ -5,6 +5,10 @@ R source code for the paper "Genetic Specification Search for Composite-Based St
 ## Usage
 To run the script with custom hyperparameters:
 ```bash
-Rscript main.R --param1 value1 --param2 value2
+Rscript main.R --model str1_small --modeDim 200 --popSize 200 --maxiter 100 --pcrossover 0.8 --seed_start 0 --seed_end 99
+
 ```
-hi
+
+where the inputs arguments stand for: 
+* `--model` Model to use (default: `"str1_small"`)
+* `--modeDim` Sample size as an integer (default: `100`)

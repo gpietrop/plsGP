@@ -9,7 +9,7 @@ source("hyperparameters.R")
 source("run_model.R")
 source("utils.R")
 
-# Parse options with optparse
+# Default Hyperparameters
 option_list <- list(
   make_option(c("--model"), default="str3_small", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),

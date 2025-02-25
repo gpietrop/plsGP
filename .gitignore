@@ -2,3 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
+./idea
+.DS_store
+.Rapp.history
+
+# Ignore compiled files
+*.pyc
+*.o
+*.so

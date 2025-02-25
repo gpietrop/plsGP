@@ -24,7 +24,7 @@ install.packages("cSEM", repos = "https://csem.org")
 - `src`: Contains all R source file 
 - `results/`: Stores outputs from runs, including datasets, fitenss results and p-values
 - `run_str{n}.sh/`: Is the script to run all the experiments for a specific structural model structure
-- `README.md`: Is the .md file that contain all the information to run the code
+- `README.md`: This documentation file containing all necessary information to run the code
 
 ## Usage
 
@@ -50,7 +50,6 @@ where the inputs arguments stand for:
 
 The script will automatically generate a `results/` directory with the following structure:
 
-The script will automatically generate a `results/` directory with the following structure:
 
 - **results/**
   - **hyperparam_subdir/** (e.g., `5_20_TRUE` for `maxiter=5`, `popSize=20`, `treeRows=TRUE`)

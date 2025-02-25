@@ -1,3 +1,6 @@
+source("utils.R")
+source("hyperparameters.R")
+
 get_best_individual <- function(folder_path) {
   # Read the hyperparameters file to get the true fitness value
   hyper_file <- file.path(folder_path, "hyperparameters.csv")
@@ -212,6 +215,87 @@ calculate_mean_matrix <- function(folder_path) {
   
   return
 }
+
+# Function to find the 5 most frequent matrices from _best.csv files and create SEM model strings
+find_top_5_frequent_matrices <- function(folder_path) {
+  # List all _best.csv files
+  variables <- c("eta1", "eta2", "eta3", "eta4", "eta5", "eta6") # dir_names in the other script
+  
+  # Measurement model (specify which manifest variables are associated with which latent variables)
+  measurement_model <- list(
+    eta1 = c("y1", "y2", "y3"),
+    eta2 = c("y4", "y5", "y6"),
+    eta3 = c("y7", "y8", "y9"), 
+    eta4 = c("y10", "y11", "y12"),
+    eta5 = c("y13", "y14", "y15"),
+    eta6 = c("y16", "y17", "y18")
+  )
+  
+  # Types of variables (composite or reflective)
+  type_of_variable <- c(eta1 = "composite", eta2 = "composite", 
+                        eta3 = "composite", eta4 = "composite",
+                        eta5 = "composite", eta6 = "composite")
+  
+  # Structural coefficients (optional and unused in the provided function)
+  structural_coefficients <- list()
+  
+  # List all _best.csv files
+  best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
+  
+  total_matrices <- length(best_files)
+  
+  if (total_matrices == 0) {
+    cat("No matrices found.\n")
+    return(NULL)
+  }
+  
+  # Initialize a list to store matrices
+  matrix_list <- list()
+  
+  # Read each matrix from the best files
+  for (file in best_files) {
+    candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
+    matrix_list[[length(matrix_list) + 1]] <- candidate_matrix
+  }
+  
+  # Count the frequency of each unique matrix by converting matrices to strings
+  matrix_string_list <- sapply(matrix_list, function(m) paste(as.vector(t(m)), collapse = ","))
+  matrix_freq_table <- table(matrix_string_list)
+  
+  # Find the 5 most frequent matrices
+  top_5 <- head(sort(matrix_freq_table, decreasing = TRUE), 5)
+  
+  # Extract the actual matrices and their frequencies
+  top_5_matrices <- list()
+  for (matrix_string in names(top_5)) {
+    matrix_values <- as.numeric(strsplit(matrix_string, ",")[[1]])
+    matrix_dim <- sqrt(length(matrix_values))  # Assuming square matrices
+    matrix_top <- matrix(matrix_values, nrow = matrix_dim, byrow = TRUE)  # Use byrow = TRUE for proper row order
+    top_5_matrices[[length(top_5_matrices) + 1]] <- list(matrix = matrix_top, frequency = top_5[[matrix_string]])
+  }
+  
+  # Print the results and the SEM model string
+  cat("Top 5 most frequent matrices, their frequencies (percentage), and SEM model strings:\n")
+  for (i in 1:length(top_5_matrices)) {
+    # Calculate the percentage frequency
+    percentage <- (top_5_matrices[[i]]$frequency / total_matrices) * 100
+    
+    # Generate and print the SEM model string for each matrix
+    sem_model_string <- create_sem_model_string_from_matrix_small(
+      adj_matrix = top_5_matrices[[i]]$matrix, 
+      variables = variables, 
+      measurement_model = measurement_model, 
+      structural_coefficients = structural_coefficients, 
+      type_of_variable = type_of_variable
+    )
+    
+    # Print the matrix with its percentage frequency and SEM model
+    cat("\nSEM Model", i, "-- Frequency:", round(percentage, 2), "%:\n", sem_model_string, "\n")
+  }
+  
+  return(top_5_matrices)
+}
+
 
 
 process_p_values_directory <- function(input_dir) {

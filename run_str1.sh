@@ -15,7 +15,7 @@ end=199
 for model in "${models[@]}"; do
     for dim in "${dimensions[@]}"; do
         echo "Running Rscript for model $model with modeDim $dim"
-        Rscript main.R --model=$model --modeDim=$dim --popSize=$pop --maxiter=$ep --seed_end=$end &
+        Rscript src/main.R --model=$model --modeDim=$dim --popSize=$pop --maxiter=$ep --seed_end=$end &
     done
 done
 

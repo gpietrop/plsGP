@@ -6,7 +6,7 @@ plsGP.Rproj
 ./idea
 .DS_store
 .Rapp.history
-
+test/
 # Ignore compiled files
 *.pyc
 *.o

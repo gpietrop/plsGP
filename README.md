@@ -23,7 +23,7 @@ install.packages("cSEM", repos = "https://csem.org")
 ## Directory Structure
 - `src`: Contains all R source file 
 - `results/`: Stores outputs from runs, including datasets, fitenss results and p-values
-- `run_str{n}.sh/`: Is the script to run all the experiments for a specific structural model structure
+- `run_str{n}.sh/`: Script to run all the experiments for a specific structural model structure
 - `README.md`: This documentation file containing all necessary information to run the code
 
 ## Usage
@@ -31,7 +31,7 @@ install.packages("cSEM", repos = "https://csem.org")
 To run the script with custom hyperparameters:
 
 ``` bash
-Rscript main.R --model str1_small --modeDim 200 --popSize 200 --maxiter 100 --pcrossover 0.8 --seed_start 0 --seed_end 99
+Rscript src/main.R --model str1_small --modeDim 200 --popSize 200 --maxiter 100 --pcrossover 0.8 --seed_start 0 --seed_end 99
 ```
 
 where the inputs arguments stand for: 

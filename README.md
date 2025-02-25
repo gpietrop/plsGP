@@ -50,24 +50,25 @@ where the inputs arguments stand for:
 
 The script will automatically generate a `results/` directory with the following structure:
 
+The script will automatically generate a `results/` directory with the following structure:
+
 - **results/**
-  - **[hyperparam_subdir]/**: Subdirectory based on hyperparameters (e.g., population size, max iterations, tree row usage)
-    - **str1/**: Results for models starting with `"str1"`
-      - **[model_name]/**: Subfolder for a specific model and dimension
-        - **[seed]_dataset_generated.csv**: Generated dataset for a specific run
-        - **[seed]_hyperparameters.csv**: Hyperparameter configuration for the GA run
-        - **[seed]_time.csv**: Time taken to complete the GA run
-        - **[seed]_best.csv**: Best model structure found during the run (as an adjacency matrix)
-        - **[seed]_fitness.csv**: Final fitness value of the best individual
-    - **p_values/**: Directory containing cumulative p-values for SEM path estimates
-      - **p_[model]_[modeDim]**: P-values file for a specific model and sample size
+  - **hyperparam_subdir/** (e.g., `5_20_TRUE` for `maxiter=5`, `popSize=20`, `treeRows=TRUE`)
+    - **str1/** (or `str2/`, `str3/`, `str4/` depending on the model)
+      - **model_name/** (e.g., `str1_small_100` for model name and sample size)
+        - **seed_dataset_generated.csv**: Generated dataset for the corresponding seed.
+        - **seed_hyperparameters.csv**: Configuration of hyperparameters used for the run.
+        - **seed_time.csv**: Time taken for the GA execution.
+        - **seed_best.csv**: Best SEM model structure found during the run (as an adjacency matrix).
+        - **seed_fitness.csv**: Final fitness value of the best individual.
+    - **p_values/** (Directory containing cumulative p-values)
+      - **p_model_modeDim**: Cumulative p-values file for a specific model and sample size.
 
 ### Explanation of Outputs
 
-- **`[seed]_dataset_generated.csv`**: Contains the generated dataset for a specific run.
-- **`[seed]_hyperparameters.csv`**: Stores the hyperparameter configuration for the corresponding GA run.
-- **`[seed]_time.csv`**: Records the total execution time for the GA run.
-- **`[seed]_best.csv`**: Contains the best SEM model structure found during the run, typically represented as an adjacency matrix.
-- **`[seed]_fitness.csv`**: Fitness value of the best individual from the run.
-- **`p_values/p_[model]_[modeDim]`**: Aggregated p-values across all possible SEM connections for a specific model and sample size.
-
+- 📄 **`seed_dataset_generated.csv`**: Dataset generated during the specific GA run.
+- ⚙️ **`seed_hyperparameters.csv`**: Hyperparameter settings used for that run.
+- ⏱️ **`seed_time.csv`**: Total runtime of the GA execution for that seed.
+- 🏆 **`seed_best.csv`**: Best model structure found, saved as an adjacency matrix.
+- 💪 **`seed_fitness.csv`**: Fitness value of the best-found solution.
+- 📊 **`p_values/p_model_modeDim`**: Aggregated p-values for all SEM path estimates, based on the specific model and sample size.

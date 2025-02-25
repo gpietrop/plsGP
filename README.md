@@ -56,13 +56,13 @@ The script will automatically generate a `results/` directory with the following
   - **hyperparam_subdir/** (e.g., `5_20_TRUE` for `maxiter=5`, `popSize=20`, `treeRows=TRUE`)
     - **str1/** (or `str2/`, `str3/`, `str4/` depending on the model)
       - **model_name/** (e.g., `str1_small_100` for model name and sample size)
-        - **seed_dataset_generated.csv**: Generated dataset for the corresponding seed.
-        - **seed_hyperparameters.csv**: Configuration of hyperparameters used for the run.
-        - **seed_time.csv**: Time taken for the GA execution.
-        - **seed_best.csv**: Best SEM model structure found during the run (as an adjacency matrix).
-        - **seed_fitness.csv**: Final fitness value of the best individual.
+        - **seed_dataset_generated.csv** 
+        - **seed_hyperparameters.csv**
+        - **seed_time.csv**
+        - **seed_best.csv**
+        - **seed_fitness.csv**
     - **p_values/** (Directory containing cumulative p-values)
-      - **p_model_modeDim**: Cumulative p-values file for a specific model and sample size.
+      - **p_model_modeDim**
 
 ### Explanation of Outputs
 

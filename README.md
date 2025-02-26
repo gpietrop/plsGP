@@ -26,29 +26,28 @@ install.packages("cSEM", repos = "https://csem.org")
 - `run_str{n}.sh/`: Script to run all the experiments for a specific structural model structure
 - `README.md`: This documentation file containing all necessary information to run the code
 
-## Usage
-
-To run the script with custom hyperparameters:
-
-``` bash
-Rscript src/main.R --model str1_small --modeDim 200 --popSize 200 --maxiter 100 --pcrossover 0.8 --seed_start 0 --seed_end 99
-```
-
-where the inputs arguments stand for: 
-* `--model` Model to use (default:
-`"str1_small"`) 
-* `--modeDim` Sample size as an integer (default:
-`100`) 
-* `--popSize`: Population size as an integer (default: `200`) 
-* `--maxiter`: Maximum number of iterations as an integer (default:
-`100`) 
-* `--pcrossover`: Crossover rate as a double (default: `0.8`) 
-* `--seed_start`: First seed for the GA (default: `0`) 
-* `--seed_end`: Last seed for the GA (default: `99`)
 
 ## 📂 `src/` Folder Overview  
 
-The `src/` folder contains the main scripts required to execute the method. Below is a description of each file (apart from `main.R` already described above):  
+The `src/` folder contains the main scripts required to execute the method. Below is a description of each file:
+
+### 📝 `main.R`  
+This script is the entry point for running the genetic algorithm with customizable hyperparameters.  
+
+#### 🔹 Usage:  
+```bash
+Rscript src/main.R --model str1_small --modeDim 200 --popSize 200 --maxiter 100 --pcrossover 0.8 --seed_start 0 --seed_end 99
+```
+
+#### 🔹 Parameters:  
+- **`--model`**: Model to use (default: `"str1_small"`).  
+- **`--modeDim`**: Sample size as an integer (default: `100`).  
+- **`--popSize`**: Population size as an integer (default: `200`).  
+- **`--maxiter`**: Maximum number of iterations as an integer (default: `100`).  
+- **`--pcrossover`**: Crossover rate as a double (default: `0.8`).  
+- **`--seed_start`**: First seed for the Genetic Algorithm (default: `0`).  
+- **`--seed_end`**: Last seed for the Genetic Algorithm (default: `99`).  
+
 
 ### 📝 `analysis.R`  
 This script provides a function, **`process_folder()`**, which analyzes the results obtained from different runs. The function computes summary statistics and metrics based on the results stored in a specified folder.  

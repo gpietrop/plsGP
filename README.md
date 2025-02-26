@@ -46,6 +46,42 @@ where the inputs arguments stand for:
 * `--seed_start`: First seed for the GA (default: `0`) 
 * `--seed_end`: Last seed for the GA (default: `99`)
 
+## 📂 `src/` Folder Overview  
+
+The `src/` folder contains the main scripts required to execute the method. Below is a description of each file (apart from `main.R` already described above):  
+
+### 📝 `analysis.R`  
+This script provides a function, **`process_folder()`**, which analyzes the results obtained from different runs. The function computes summary statistics and metrics based on the results stored in a specified folder.  
+
+#### 🔹 Usage:  
+```r
+str_id <- "str1"
+effect_size <- "high"
+sample_size <- "100"
+name_folder <- "200_100_TRUE"
+process_folder(name_folder, str_id, effect_size, sample_size, print_frequent = TRUE, print_examples = FALSE)
+```
+#### 🔹 Parameters:  
+- **`name_folder`**: The name of the folder inside the `results/` directory where the results are stored.  
+- **`str_id`**: The structure identifier (`"str1"`, `"str2"`, `"str3"`, or `"str4"`).  
+- **`effect_size`**: The effect size of the experiment (`"small"`, `"medium"`, or `"high"`).  
+- **`sample_size`**: The sample size used in the experiment (e.g., `100`, `250`, or `500`, as in the reference paper).  
+- **`print_frequent`**: If `TRUE`, prints the most frequently found matrices across different runs.  
+- **`print_examples`**: If `TRUE`, displays example matrices that either contain or are contained in the original model.  
+
+#### 🔹 Output:  
+By default, `process_folder()`:
+- Returns the **mean of all matrices** generated in different runs.  
+- Computes **accuracy and the parsimonious rate**, as reported in **Table 1** of the reference paper.  
+- Optionally, prints the **most frequent matrices** found by the model (`print_frequent = TRUE`).  
+- Optionally, provides **examples of matrices** contained within or containing the original model (`print_examples = TRUE`).  
+
+* `analysis_utils.R`, `fitness_utils.R`, `utils.R`
+* `ga_operators.R`
+* `hyperparameters.R`
+* `my_fitness.R`
+* `run_model.R`
+
 ## Output
 
 The script will automatically generate a `results/` directory with the following structure:

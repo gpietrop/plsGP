@@ -2,15 +2,16 @@
 
 R source code for the paper *"Genetic Specification Search for Composite-Based Structural Equation Modeling"*.
 
-## Overview
-This repository provides an implementation of a Genetic Algorithm (GA) for conducting specification searches in composite-based Structural Equation Modeling (SEM). 
-The algorithm searches for the best SEM structure by optimizing model fit criteria using evolutionary strategies.
+## 📝 Overview  
 
-## Requirements 
-The following R packages are required: 
-- `GA`
-- `optparse`
-- `cSEM`
+This repository provides an implementation of a **Genetic Algorithm (GA)** for conducting specification searches in **composite-based Structural Equation Modeling (SEM)**.  
+The algorithm searches for the best SEM structure by optimizing model fit criteria using evolutionary strategies.  
+
+### 📦 Requirements  
+The following R packages are required:  
+- 📌 **`GA`**  
+- 📌 **`optparse`**  
+- 📌 **`cSEM`**  
 
 You can install the necessary packages using:
 
@@ -20,12 +21,11 @@ install.packages(c("GA", "optparse"))
 install.packages("cSEM", repos = "https://csem.org")
 ```
 
-## Directory Structure
-- `src`: Contains all R source file 
-- `results/`: Stores outputs from runs, including datasets, fitenss results and p-values
-- `run_str{n}.sh/`: Script to run all the experiments for a specific structural model structure
-- `README.md`: This documentation file containing all necessary information to run the code
-
+### 📂 Directory Structure  
+- **`src/`** 📜 Contains all R source files  
+- **`results/`** 📊 Stores outputs from runs, including datasets, fitness results, and p-values  
+- **`run_str{n}.sh/`** 🚀 Script to run all the experiments for a specific structural model structure  
+- **`README.md`** 📖 This documentation file containing all necessary information to run the code  
 
 ## 📂 `src/` Folder Overview  
 

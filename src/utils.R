@@ -1,4 +1,3 @@
-# Load igraph library
 library(igraph)
 
 
@@ -38,18 +37,16 @@ create_sem_model_string_from_matrix <- function(adj_matrix, variables, measureme
   }
   
   # Cleanup the string: remove any unnecessary characters and trim trailing spaces/new lines
-  model_string <- gsub("\\n\\s+$", "", model_string)  # Remove trailing new line and spaces
-  model_string <- trimws(model_string)  # Remove any leading or trailing whitespace
+  model_string <- gsub("\\n\\s+$", "", model_string)  
+  model_string <- trimws(model_string)  
   
   # Return the complete model string
   return(model_string)
 }
 
 create_sem_model_string_from_matrix_small <- function(adj_matrix, variables, measurement_model, structural_coefficients, type_of_variable) {
-  # Structural model section
   model_string <- ""
   
-  # Iterate over each variable to define its dependencies based on the matrix
   for (i in seq_along(variables)) {
     dependent <- variables[i]
     predictors <- variables[adj_matrix[i, ] == 1]
@@ -59,12 +56,9 @@ create_sem_model_string_from_matrix_small <- function(adj_matrix, variables, mea
       model_string <- paste(model_string, sprintf("  %s ~ %s\n", dependent, relationship_str), sep = "")
     }
   }
+  model_string <- gsub("\\n\\s+$", "", model_string)  
+  model_string <- trimws(model_string)  
   
-  # Cleanup the string: remove any unnecessary characters and trim trailing spaces/new lines
-  model_string <- gsub("\\n\\s+$", "", model_string)  # Remove trailing new line and spaces
-  model_string <- trimws(model_string)  # Remove any leading or trailing whitespace
-  
-  # Return the complete model string
   return(model_string)
 }
 
@@ -72,9 +66,9 @@ update_p_value_file <- function(file_name, p_name, p_val) {
   # Read the existing file
   df <- read.table(file_name, header = TRUE, stringsAsFactors = FALSE, sep = "\t", fill = TRUE)
   
-  # Add a new column for the current run
-  new_col_name <- paste0("Run", ncol(df))  # Example: Run1, Run2, etc.
-  df[[new_col_name]] <- NA  # Initialize new column with NA
+  # Add a new column for the current run and initializa with NA
+  new_col_name <- paste0("Run", ncol(df))  
+  df[[new_col_name]] <- NA  
   
   # Fill in p-values for current run
   for (i in 1:length(p_name)) {

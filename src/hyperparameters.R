@@ -1,5 +1,6 @@
 library(cSEM.DGP)
 library(cSEM)
+
 # List of variable names
 variables <- c("eta1", "eta2", "eta3", "eta4", "eta5", "eta6") # dir_names in the other script
 n_variables <- length(variables)

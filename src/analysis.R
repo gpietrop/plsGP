@@ -1,9 +1,7 @@
-# Load necessary libraries
 library(readr)
 library(dplyr)
 library(here)
 
-# Source custom utility functions
 source("analysis_utils.R")
 
 # Define the specific matrices for different str values
@@ -46,32 +44,33 @@ specific_matrices_list <- list(
   )
 )
 
-# Function to process matrices in a given folder path
-process_folder <- function(str_id, run_suffix, print_examples = FALSE, num_examples = 3) {
-  # Select the corresponding matrix based on str_id
+process_folder <- function(name_folder, str_id, run_suffix, print_frequent = FALSE,
+                           print_examples = FALSE, num_examples = 3) {
   specific_matrix <- specific_matrices_list[[str_id]]
-  # Construct the folder path using `str_id`
-  folder_path <- here("results", "200_100_TRUE", str_id)
+  folder_path <- here("results", name_folder, str_id)
+  
   path <- file.path(folder_path, paste0(str_id, "_", run_suffix))
-  # print(path)
+
   # Check matrices against the specific matrix
   check <- check_matrices(path, specific_matrix, print_examples, num_examples)
   
   # Calculate the mean matrix
   mean_matrix <- calculate_mean_matrix(path)
   
-  # top5 <- find_top_5_frequent_matrices(path)
+  # Print top 5 matrices found
+  if (print_frequent) {
+    cat("\nTop 5 frequent matrices:\n")
+    top5 <- find_top_5_frequent_matrices(path)
+    print(top5)
+  }
   
   # Print the mean matrix (if needed)
   print(mean_matrix)
 }
 
-# Define `str_id` and `run_suffix`
-str_id <- "str4"  # Change to "str2" or "str3" as needed
 
-run_suffix <- "high_500"
-
-# Process the folder with the defined parameters
-process_folder(str_id, run_suffix, FALSE)
-# calculate_mean_matrix()
+str_id <- "str1"  
+run_suffix <- "high_100"
+name_folder <- "200_100_TRUE"
+process_folder(name_folder, str_id, run_suffix, print_frequent = TRUE, print_examples = FALSE)
 

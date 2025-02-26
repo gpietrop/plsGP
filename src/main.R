@@ -2,7 +2,7 @@ library(GA)
 library(optparse)
 
 setwd("src")
-getwd()
+
 source("my_fitness.R")
 source("ga_operators.R")
 source("hyperparameters.R")
@@ -11,10 +11,10 @@ source("utils.R")
 
 # default hyperparameters
 option_list <- list(
-  make_option(c("--model"), default="str3_small", help="Model to use"),
+  make_option(c("--model"), default="str1_high", help="Model to use"),
   make_option(c("--modeDim"), type="integer", default=100, help="Sample size"),
-  make_option(c("--popSize"), type="integer", default=20, help="Population size"),
-  make_option(c("--maxiter"), type="integer", default=6, help="Maximum iterations"),
+  make_option(c("--popSize"), type="integer", default=50, help="Population size"),
+  make_option(c("--maxiter"), type="integer", default=40, help="Maximum iterations"),
   make_option(c("--pmutation"), type="double", default=1.0, help="Mutation rate"),
   make_option(c("--pcrossover"), type="double", default=0.8, help="Crossover rate"),
   make_option(c("--seed_start"), type="integer", default=0, help="First seed for the GA"),

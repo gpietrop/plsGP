@@ -5,15 +5,11 @@ source("hyperparameters.R")
 
 
 myMutation <- function(object, parent) {
-  
   mutate <- parent <- as.vector(object@population[parent,])
   mutate_matrix <- matrix(mutate, nrow = n_variables, byrow = TRUE)
   
-  diag(mutate_matrix) <- 0  # Set the diagonal elements to zero
+  diag(mutate_matrix) <- 0  
   
-  mutate_matrix[upper.tri(mutate_matrix)] <- 0
-  
-  # Ensure the first row is all zeros
   mutate_matrix[1, ] <- 0
   
   mutate_vector <- as.vector(t(mutate_matrix))
@@ -27,7 +23,7 @@ myMutation <- function(object, parent) {
     subdiag_indices <- (indices[, 1] - 1) * n_variables + indices[, 2]
     
     # Select a random index from the sub-diagonal indices to flip
-    if (length(subdiag_indices) > 0 && runif(1) <= 0.3) {
+    if (length(subdiag_indices) > 0 && runif(1) <= 0.2) {
       j <- sample(subdiag_indices, size = 1)
       mutate_vector[j] <- abs(mutate_vector[j] - 1)
     }
@@ -37,11 +33,10 @@ myMutation <- function(object, parent) {
 }
 
 myMutationTreeRowZero <- function(object, parent) {
-  
   mutate <- parent <- as.vector(object@population[parent,])
   mutate_matrix <- matrix(mutate, nrow = n_variables, byrow = TRUE)
   
-  diag(mutate_matrix) <- 0  # Set the diagonal elements to zero
+  diag(mutate_matrix) <- 0  
   
   # Ensure the first three rows are all zeros
   mutate_matrix[1, ] <- 0
@@ -57,7 +52,7 @@ myMutationTreeRowZero <- function(object, parent) {
   # Convert row and column indices to vector indices
   if (length(indices) > 0) {
     subdiag_indices <- (indices[, 1] - 1) * n_variables + indices[, 2]
-    # Select a random index from the sub-diagonal indices to flip WAS 0.3
+    # Select a random index from the sub-diagonal indices 
     if (length(subdiag_indices) > 0 && runif(1) <= 0.2) {
       available_indices <- subdiag_indices  # Keep track of available indices to flip
       while (length(available_indices) > 1) {
@@ -73,7 +68,7 @@ myMutationTreeRowZero <- function(object, parent) {
           mutate_vector[j] <- abs(mutate_vector[j] - 1)
           available_indices <- setdiff(available_indices, j)
         } else {
-          break  # Exit the loop if no cycle is found
+          break  
         }
       }
     }

@@ -2,22 +2,17 @@ source("utils.R")
 source("hyperparameters.R")
 
 get_best_individual <- function(folder_path) {
-  # Read the hyperparameters file to get the true fitness value
   hyper_file <- file.path(folder_path, "hyperparameters.csv")
   hyper_data <- read.csv(hyper_file)
   true_fitness <- hyper_data$True.AIC[1]
   
-  # List all fitness files
   fitness_files <- list.files(path = folder_path, pattern = "*_fitness.csv", full.names = TRUE)
   
   best_fitness <- Inf
   best_run <- NULL
   
-  # Iterate over each fitness file
   for (file in fitness_files) {
     fitness_data <- read.csv(file)
-    
-    # Check if this fitness is the best so far
     current_best_fitness <- min(fitness_data$Fitness)
     if (current_best_fitness < best_fitness) {
       best_fitness <- current_best_fitness
@@ -25,14 +20,12 @@ get_best_individual <- function(folder_path) {
     }
   }
   
-  # If we found the best run, read the best individual
   if (!is.null(best_run)) {
     best_file <- file.path(folder_path, paste0(best_run, "_best.csv"))
     best_individual <- read.csv(best_file, row.names = 1)
     
-    # Print best fitness and compare it to the fitness in hyperparameters.csv
-    cat("Best fitness from all runs:", best_fitness, "\n")
-    cat("Fitness from hyperparameters.csv (True AIC):", true_fitness, "\n")
+    cat("Best BIC from all runs:", best_fitness, "\n")
+    cat("BIC from hyperparameters.csv (True BIC):", true_fitness, "\n")
     
     return(best_individual)
   } else {
@@ -42,29 +35,23 @@ get_best_individual <- function(folder_path) {
 }
 
 get_run_info <- function(folder_path, run_number) {
-  # Read the hyperparameters file to get the true fitness value
   hyper_file <- file.path(folder_path, "hyperparameters.csv")
   hyper_data <- read.csv(hyper_file)
   true_fitness <- hyper_data$True.AIC[1]
   
-  # Construct file paths based on the run number
   fitness_file <- file.path(folder_path, paste0(run_number, "_fitness.csv"))
   best_file <- file.path(folder_path, paste0(run_number, "_best.csv"))
   
-  # Check if files exist
   if (!file.exists(fitness_file) || !file.exists(best_file)) {
     cat("Files for run", run_number, "not found.\n")
     return(NULL)
   }
   
-  # Read the fitness file
   fitness_data <- read.csv(fitness_file)
   run_fitness <- min(fitness_data$Fitness)
   
-  # Read the best individual file
   best_individual <- read.csv(best_file, row.names = 1)
   
-  # Print comparison with the True.AIC value
   cat("Run", run_number, "fitness:", run_fitness, "\n")
   cat("Fitness from hyperparameters.csv (True AIC):", true_fitness, "\n")
   cat("Comparison result:", ifelse(run_fitness < true_fitness, "Better", "Worse or Equal"), "\n")
@@ -74,47 +61,34 @@ get_run_info <- function(folder_path, run_number) {
 
 
 visualize_fitness_distribution <- function(folder_path) {
-  # Read the hyperparameters file to get the target fitness value
   hyper_file <- file.path(folder_path, "hyperparameters.csv")
   hyper_data <- read.csv(hyper_file)
   true_fitness <- hyper_data$True.AIC[1]
   
-  # List all fitness files
   fitness_files <- list.files(path = folder_path, pattern = "*_fitness.csv", full.names = TRUE)
-  
   all_fitness <- c()
   
-  # Collect fitness values from all files
   for (file in fitness_files) {
     fitness_data <- read.csv(file)
     all_fitness <- c(all_fitness, fitness_data$Fitness)
   }
   
-  # Determine the y-axis limits to include the True.AIC value
   ylim <- range(all_fitness, true_fitness)
-  
-  # Plot the boxplot
   boxplot(all_fitness, main = "Fitness Distribution Across All Runs", ylab = "Fitness", ylim = ylim)
   abline(h = true_fitness, col = "red", lty = 2)
   legend("topright", legend = c("True AIC"), col = "red", lty = 2)
 }
 
 
-# Function to check if a specific matrix is contained in a candidate matrix
 is_matrix_contained <- function(specific_matrix, candidate_matrix) {
-  # Check if all elements of specific_matrix that are 1 are also 1 in candidate_matrix
   all(specific_matrix == candidate_matrix | specific_matrix == 0)
 }
 
-# Function to check if a specific matrix is equal to a candidate matrix
 is_matrix_equal <- function(specific_matrix, candidate_matrix) {
-  # Check if all elements of specific_matrix are equal to those in candidate_matrix
   all(specific_matrix == candidate_matrix)
 }
 
-# Function to read all _best.csv files and check for the specific matrix
 check_matrices <- function(folder_path, specific_matrix, print_examples = FALSE, num_examples = 1) {
-  # List all _best.csv files
   if (!file.exists(folder_path)) {
     stop("Invalid folder path.")
   }
@@ -128,7 +102,6 @@ check_matrices <- function(folder_path, specific_matrix, print_examples = FALSE,
   cont_strict_examples <- list()
   rc_examples <- list()
   
-  # Iterate over each best file
   for (file in best_files) {
     candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
     
@@ -189,9 +162,7 @@ check_matrices <- function(folder_path, specific_matrix, print_examples = FALSE,
 }
 
 
-# Function to calculate the mean of all matrices in _best.csv files
 calculate_mean_matrix <- function(folder_path) {
-  # List all _best.csv files
   best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
   
   total_matrices <- length(best_files)
@@ -203,7 +174,6 @@ calculate_mean_matrix <- function(folder_path) {
   
   sum_matrix <- matrix(0, nrow = 6, ncol = 6)
   
-  # Iterate over each best file and sum the matrices
   for (file in best_files) {
     candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
     sum_matrix <- sum_matrix + candidate_matrix
@@ -216,12 +186,9 @@ calculate_mean_matrix <- function(folder_path) {
   return
 }
 
-# Function to find the 5 most frequent matrices from _best.csv files and create SEM model strings
 find_top_5_frequent_matrices <- function(folder_path) {
-  # List all _best.csv files
-  variables <- c("eta1", "eta2", "eta3", "eta4", "eta5", "eta6") # dir_names in the other script
+  variables <- c("eta1", "eta2", "eta3", "eta4", "eta5", "eta6") 
   
-  # Measurement model (specify which manifest variables are associated with which latent variables)
   measurement_model <- list(
     eta1 = c("y1", "y2", "y3"),
     eta2 = c("y4", "y5", "y6"),
@@ -231,17 +198,12 @@ find_top_5_frequent_matrices <- function(folder_path) {
     eta6 = c("y16", "y17", "y18")
   )
   
-  # Types of variables (composite or reflective)
   type_of_variable <- c(eta1 = "composite", eta2 = "composite", 
                         eta3 = "composite", eta4 = "composite",
                         eta5 = "composite", eta6 = "composite")
-  
-  # Structural coefficients (optional and unused in the provided function)
   structural_coefficients <- list()
   
-  # List all _best.csv files
   best_files <- list.files(path = folder_path, pattern = "*_best.csv", full.names = TRUE)
-  
   total_matrices <- length(best_files)
   
   if (total_matrices == 0) {
@@ -249,23 +211,17 @@ find_top_5_frequent_matrices <- function(folder_path) {
     return(NULL)
   }
   
-  # Initialize a list to store matrices
   matrix_list <- list()
   
-  # Read each matrix from the best files
   for (file in best_files) {
     candidate_matrix <- as.matrix(read.csv(file, row.names = 1))
     matrix_list[[length(matrix_list) + 1]] <- candidate_matrix
   }
   
-  # Count the frequency of each unique matrix by converting matrices to strings
   matrix_string_list <- sapply(matrix_list, function(m) paste(as.vector(t(m)), collapse = ","))
   matrix_freq_table <- table(matrix_string_list)
   
-  # Find the 5 most frequent matrices
   top_5 <- head(sort(matrix_freq_table, decreasing = TRUE), 5)
-  
-  # Extract the actual matrices and their frequencies
   top_5_matrices <- list()
   for (matrix_string in names(top_5)) {
     matrix_values <- as.numeric(strsplit(matrix_string, ",")[[1]])
@@ -274,13 +230,10 @@ find_top_5_frequent_matrices <- function(folder_path) {
     top_5_matrices[[length(top_5_matrices) + 1]] <- list(matrix = matrix_top, frequency = top_5[[matrix_string]])
   }
   
-  # Print the results and the SEM model string
   cat("Top 5 most frequent matrices, their frequencies (percentage), and SEM model strings:\n")
   for (i in 1:length(top_5_matrices)) {
-    # Calculate the percentage frequency
     percentage <- (top_5_matrices[[i]]$frequency / total_matrices) * 100
     
-    # Generate and print the SEM model string for each matrix
     sem_model_string <- create_sem_model_string_from_matrix_small(
       adj_matrix = top_5_matrices[[i]]$matrix, 
       variables = variables, 
@@ -289,7 +242,6 @@ find_top_5_frequent_matrices <- function(folder_path) {
       type_of_variable = type_of_variable
     )
     
-    # Print the matrix with its percentage frequency and SEM model
     cat("\nSEM Model", i, "-- Frequency:", round(percentage, 2), "%:\n", sem_model_string, "\n")
   }
   
@@ -299,51 +251,30 @@ find_top_5_frequent_matrices <- function(folder_path) {
 
 
 process_p_values_directory <- function(input_dir) {
-  
-  # Create output directory 'p_values_for_tkz' at the same level as the input directory
   output_dir <- file.path(dirname(input_dir), "p_values_for_tkz")
   if (!dir.exists(output_dir)) {
     dir.create(output_dir)
   }
-  
-  # List all files in the input directory
   files <- list.files(input_dir, full.names = TRUE)
   
-  # Process each file
   for (file_path in files) {
-    # Extract file name without extension for naming purposes
     file_name <- tools::file_path_sans_ext(basename(file_path))
     
-    # Create a subdirectory for the current file in the 'p_values_for_tkz' folder
     subdirectory <- file.path(output_dir, paste0("bp_", file_name))
     if (!dir.exists(subdirectory)) {
       dir.create(subdirectory)
     }
     
-    # Read the current file
     data <- read_delim(file_path, delim = "\t", , show_col_types = FALSE)
-    
-    # Remove the first row (assuming it contains run names)
     data <- data[-1, ]
     
-    # Process each row to create individual files
     for (i in 1:nrow(data)) {
-      # Extract connection name and sanitize it for file-system safety
       connection <- gsub(" ~ ", "_", data$Connection[i])
-      
-      # Get non-NA values, excluding the 'Connection' column
       non_na_values <- as.numeric(data[i, -1])
       non_na_values <- non_na_values[!is.na(non_na_values)]
-      
-      # Create the file inside the subdirectory
       file_name <- paste0(subdirectory, "/bp_", connection, ".txt")
-      
-      # Write "res" as the first line
       write.table("res", file = file_name, row.names = FALSE, col.names = FALSE, quote = FALSE)
-      
-      # Append the non-NA values
       write.table(non_na_values, file = file_name, row.names = FALSE, col.names = FALSE, quote = FALSE, append = TRUE)
     }
   }
 }
-

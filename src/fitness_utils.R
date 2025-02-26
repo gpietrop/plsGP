@@ -12,11 +12,6 @@ check_matrix_criteria <- function(adj_matrix) {
     return(FALSE)
   }
   
-  # Check if all elements in the upper triangular matrix are zeros
-  if (any(adj_matrix[upper.tri(adj_matrix)] != 0)) {
-    return(FALSE)
-  }
-  
   return(TRUE)
 }
 
@@ -31,11 +26,6 @@ check_matrix_criteriaTreeRowZero <- function(adj_matrix) {
   if (any(diag(adj_matrix) != 0)) {
     return(FALSE)
   }
-  
-  # Check if all elements in the upper triangular matrix are zeros
-  # if (any(adj_matrix[upper.tri(adj_matrix)] != 0)) {
-  #   return(FALSE)
-  # }
   
   return(TRUE)
 }
@@ -55,9 +45,9 @@ repair_individual_unused <- function(adj_matrix) {
       # Decide randomly whether to modify the row or column, only if there's a choice below the diagonal
         if (runif(1) < 0.5) {
           # Modify a column: choose a row index below the diagonal element
-          valid_rows <- if (k == n) 2:(n-1) else (k+1):n # start from the second row
+          valid_rows <- if (k == n) 2:(n-1) else (k+1):n 
           if (k <= n) {
-            # Remove the diagonal element specifically
+            # Remove the diagonal element 
             valid_rows <- valid_rows[valid_rows != k]
           }
           if (length(valid_rows) > 0) {
@@ -67,23 +57,21 @@ repair_individual_unused <- function(adj_matrix) {
               condition_met <- TRUE
               while (length(valid_rows) > 0 && condition_met) {
                 chosen_row <- sample(valid_rows, 1)
-                # print(valid_rows)
                 adj_matrix_mod <- adj_matrix
                 adj_matrix_mod[chosen_row, k] <- 1
                 valid_rows <- valid_rows[-which(valid_rows == chosen_row)]
                 g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
                 condition_met <- has_cycle_dfs(g, adj_matrix_mod)
-                # condition_met <- !is.infinite(girth(g)$girth)
                   if (!condition_met) {
                     adj_matrix <- adj_matrix_mod
-                    break  # Exit the loop if the condition is met
+                    break  
                 }
               }
             }
           }
         } else {
           # Modify a row: choose a column index below the diagonal element
-          valid_cols <- if (k == n) 1:(n-1) else (k+1):n # start from the second row
+          valid_cols <- if (k == n) 1:(n-1) else (k+1):n 
           if (k <= n) {
             # Remove the diagonal element specifically
             valid_cols <- valid_cols[valid_cols != k]
@@ -95,16 +83,14 @@ repair_individual_unused <- function(adj_matrix) {
               condition_met <- TRUE
               while (length(valid_cols) > 0 && condition_met) {
                 chosen_col <- sample(valid_cols, 1)
-                # print(valid_cols)
                 adj_matrix_mod <- adj_matrix
                 adj_matrix_mod[chosen_col, k] <- 1
                 valid_cols <- valid_cols[-which(valid_cols == chosen_col)]
                 g <- graph_from_adjacency_matrix(adj_matrix_mod, mode = "directed", diag = FALSE)
                 condition_met <- has_cycle_dfs(g, adj_matrix_mod)
-                # condition_met <- !is.infinite(girth(g)$girth)
                 if (!condition_met) {
                   adj_matrix <- adj_matrix_mod
-                  break  # Exit the loop if the condition is met
+                  break  
                 }
               }
             }
@@ -121,8 +107,8 @@ check_matrix <- function(mat) {
   for (i in 1:n) {
       # Check if there is at least one 1 in the row or column
       if (all(mat[i, ] == 0) && all(mat[, i] == 0)) {
-        return(FALSE)  # Return FALSE if the condition is not met
+        return(FALSE)  
     }
   }
-  return(TRUE)  # Return TRUE if the condition is met for all indices
+  return(TRUE)  
 }

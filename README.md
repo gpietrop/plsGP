@@ -116,9 +116,9 @@ results/
 
 ### 🔹 Explanation of Outputs
 
-- 📄 **`seed_dataset_generated.csv`**: Dataset generated during the specific GA run.
-- ⚙️ **`seed_hyperparameters.csv`**: Hyperparameter settings used for that run.
-- ⏱️ **`seed_time.csv`**: Total runtime of the GA execution for that seed.
-- 🏆 **`seed_best.csv`**: Best model structure found, saved as an adjacency matrix.
-- 💪 **`seed_fitness.csv`**: Fitness value of the best-found solution.
-- 📊 **`p_values/p_model_modeDim`**: Aggregated p-values for all SEM path estimates, based on the specific model and sample size.
+- 📄 `seed_dataset_generated.csv`: Dataset generated during the specific GA run.
+- ⚙️ `seed_hyperparameters.csv`: Hyperparameter settings used for that run.
+- ⏱️ `seed_time.csv`: Total runtime of the GA execution for that seed.
+- 🏆 `seed_best.csv`: Best model structure found, saved as an adjacency matrix.
+- 💪 `seed_fitness.csv`: Fitness value of the best-found solution.
+- 📊 `p_values/p_model_modeDim`: Aggregated p-values for all SEM path estimates, based on the specific model and sample size.

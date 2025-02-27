@@ -1,6 +1,10 @@
-# Genetic Specification Search for Composite-Based Structural Equation Modeling
+# AGAS-PLS: Genetic Specification Search for Composite-Based Structural Equation Modeling
 
-R source code for the paper *"Genetic Specification Search for Composite-Based Structural Equation Modeling"*.
+**Authors:** Laura Trinchera, **Gloria Pietropolli**, Mauro Castelli, Florian Schuberth
+
+This repository contains the R implementation of **AGAS-PLS**, an Automated Genetic Algorithm Specification search for **composite-based Structural Equation Modeling (SEM)**. 
+
+AGAS-PLS integrates **partial least squares path modeling (PLS-PM)**—one of the most widely used techniques in composite-based SEM—with a **Genetic Algorithm (GA)** to systematically search for the model that best fits empirical data. 
 
 ## 📝 Overview  
 
@@ -75,11 +79,20 @@ By default, `process_folder()`:
 - Optionally, prints the **most frequent matrices** found by the model (`print_frequent = TRUE`).  
 - Optionally, provides **examples of matrices** contained within or containing the original model (`print_examples = TRUE`).  
 
-* `analysis_utils.R`, `fitness_utils.R`, `utils.R`
-* `ga_operators.R`
-* `hyperparameters.R`
-* `my_fitness.R`
-* `run_model.R`
+### 🛠️ `analysis_utils.R`, `fitness_utils.R`, `utils.R`
+Utility functions used by other scripts.
+
+### 🔄 `ga_operators.R`
+Defines the mutation operator designed to ensure that the set of exogenous constructs in the structural model remains unchanged and that constructs do not affect themselves or violate model validity.
+
+### ⚙️ `hyperparameters.R`
+Defines the structures used in this work, including variables, whether they are composite, the weights of composite variables, and the correlations between observed variables for all considered structural models (`str1`, `str2` and `str3`). 
+
+### 📊 `my_fitness.R`
+Defines the fitness function used in this work, based on the Bayesian Information Criterion (BIC), designed to penalize candidate solutions outside the valid search space.
+
+### 📈 `run_model.R`
+Contains functions to compute the BIC based on the considered structural model and the generated dataset.
 
 ## 📂 Output  
 
